@@ -84,7 +84,7 @@ class Espresso(ServiceBase):
     SERVICE_DESCRIPTION = "This service analyzes Java JAR files. All classes are extracted, decompiled and " \
                           "analyzed for malicious behavior."
     SERVICE_ENABLED = True
-    SERVICE_REVISION = ServiceBase.parse_revision('$Id: aeeee8bdd0ebcdc913fbd557e5ee5bf3976bb0ab $')
+    SERVICE_REVISION = ServiceBase.parse_revision('$Id$')
     SERVICE_VERSION = '1'
     SERVICE_CPU_CORES = 0.8
     SERVICE_RAM_MB = 1024
