@@ -3,7 +3,7 @@ import os
 
 
 def install(alsi):
-    remote_cfr = 'cfr/cfr.jar'
+    remote_cfr = 'cfr/cfr_0_125.jar'
     local_cfr = os.path.join(alsi.alroot, 'support/cfr/cfr.jar')
     alsi.fetch_package(remote_cfr, local_cfr)
 
