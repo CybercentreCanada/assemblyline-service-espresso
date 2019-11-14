@@ -3,16 +3,14 @@ import logging
 import os
 import zipfile
 from subprocess import PIPE, Popen
-from textwrap import dedent
 
-from assemblyline.common.charset import translate_str
+from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
-from assemblyline.common.reaper import set_death_signal
-from assemblyline.al.common.heuristics import Heuristic
-from assemblyline.al.common.result import Result, ResultSection
-from assemblyline.al.common.result import SCORE, TAG_TYPE, TAG_WEIGHT, TEXT_FORMAT
-from assemblyline.al.service.base import ServiceBase
-from assemblyline.al.common import forge
+from assemblyline.common.str_utils import translate_str
+from assemblyline_v4_service.common.base import ServiceBase
+from assemblyline_v4_service.common.utils import set_death_signal
+from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT
+
 
 G_LAUNCHABLE_EXTENSIONS = [
     'BAT',  # DOS/Windows batch file
@@ -29,74 +27,15 @@ APPLET_MZ = 'mz_in_applet'
 
 Classification = forge.get_classification()
 
-
 class NotJARException(Exception):
     pass
 
-
 # noinspection PyBroadException
 class Espresso(ServiceBase):
-    AL_Espresso_001 = Heuristic("AL_Espresso_001", "Embedded PE", "java/jar",
-                                dedent("""\
-                                       If the first two bytes of the JAR file are MZ there is an embedded
-                                       executable detected.
-                                       """))
-    AL_Espresso_002 = Heuristic("AL_Espresso_002", "Launchable File in JAR", "java/jar",
-                                dedent("""\
-                                       If the file path has any of the following extensions:
-                                           'BAT' - DOS/Windows batch file
-                                           'CMD' - Windows Command
-                                           'COM' - DOS Command
-                                           'EXE' - DOS/Windows executable
-                                           'DLL' - Windows library
-                                           'LNK' - Windows shortcut
-                                           'SCR' - Windows screensaver
-                                       then there is a launchable file found inside the JAR.
-                                       """))
 
-    AL_Espresso_003 = Heuristic("AL_Espresso_003", "Encoding and Magic Bytes", "java/jar",
-                                dedent("""\
-                                       The file doesnt have the normal class file magic bytes.
-                                       """))
-    AL_Espresso_004 = Heuristic("AL_Espresso_004", "java/applet/Applet", "java/jar",
-                                dedent("""\
-                                       Looking for the string "java/applet/Applet" in the file
-                                       """))
-    AL_Espresso_005 = Heuristic("AL_Espresso_005", "ClassLoader", "java/jar",
-                                dedent("""\
-                                       Looking for the string "ClassLoader" in the file
-                                       """))
-    AL_Espresso_006 = Heuristic("AL_Espresso_006", "/security/", "java/jar",
-                                dedent("""\
-                                       Looking for the string "/security/" in the file
-                                       """))
-    AL_Espresso_007 = Heuristic("AL_Espresso_007", "net/URL", "java/jar",
-                                dedent("""\
-                                       Looking for the string "net/URt" in the file
-                                       """))
-    AL_Espresso_008 = Heuristic("AL_Espresso_008", "java/lang/Runtime", "java/jar",
-                                dedent("""\
-                                       Looking for the string "java/lang/Runtime" in the file
-                                       """))
-
-    SERVICE_ACCEPTS = 'java/jar'
-    SERVICE_CATEGORY = 'Static Analysis'
-    SERVICE_DESCRIPTION = "This service analyzes Java JAR files. All classes are extracted, decompiled and " \
-                          "analyzed for malicious behavior."
-    SERVICE_ENABLED = True
-    SERVICE_REVISION = ServiceBase.parse_revision('$Id$')
-    SERVICE_VERSION = '1'
-    SERVICE_CPU_CORES = 0.8
-    SERVICE_RAM_MB = 1024
-    SERVICE_TIMEOUT = 180
-
-    SERVICE_DEFAULT_CONFIG = {
-        'CFR_PATH': '/opt/al/support/cfr/cfr.jar',
-    }
-
-    def __init__(self, cfg=None):
-        super(Espresso, self).__init__(cfg)
-        self.cfr = self.cfg.get('CFR_PATH')
+    def __init__(self, config=None):
+        super(Espresso, self).__init__(config)
+        self.cfr = self.config.get("cfr_path")
         self.applet_found = 0
         self.classloader_found = 0
         self.security_found = 0
@@ -108,7 +47,7 @@ class Espresso(ServiceBase):
 
     def start(self):
         if not os.path.isfile(self.cfr):
-            self.log.error("CFR executable is missing. Service install likely failed.")
+            self.log.error("CFR executable is missing. The service install will most likely failed.")
 
     def jar_extract(self, filename, dest_dir):
         zf = None
@@ -127,10 +66,10 @@ class Espresso(ServiceBase):
                         uni_zfname = char_enc_guessed['converted']
 
                         if char_enc_guessed['encoding'] == 'unknown':
-                            uni_zfname = u'unknown_charset_filename_%d' % unknown_charset_counter
+                            uni_zfname = f"unknown_charset_filename_{unknown_charset_counter}"
                             unknown_charset_counter += 1
 
-                        # creating the directory has problems if the filename
+                        # creating the directory as problems if the filename
                         # starts with a /, strip it off.
                         if uni_zfname.startswith("/"):
                             uni_zfname = uni_zfname[1:]
@@ -145,14 +84,14 @@ class Espresso(ServiceBase):
                             o = open(unzipped_filename, 'wb')
                         except:
                             # just in case there was invalid char ...
-                            uni_zfname = u'unknown_charset_filename_%d' % unknown_charset_counter
+                            uni_zfname = f"unknown_charset_filename_{unknown_charset_counter}"
                             unknown_charset_counter += 1
                             unzipped_filename = os.path.normpath(os.path.join(dest_dir, uni_zfname))
                             o = open(unzipped_filename, 'wb')
                         o.write(zf_content)
-                except Exception, e:
-                    self.log.exception("Failed at extracting files from the JAR (%s). Error: %s" % (
-                        filename.encode('utf-8') + "::" + uni_zfname, e))
+                except Exception as e:
+                    self.log.exception(f"Failed at extracting files from the JAR "
+                                       f"({filename.encode('utf-8') + '::' + uni_zfname}). Error: {e}")
                     return False
                 finally:
                     try:
@@ -161,14 +100,14 @@ class Espresso(ServiceBase):
                         pass
 
         except (IOError, zipfile.BadZipfile):
-            self.log.info("Not a ZIP File or Corrupt ZIP File: %s" % filename)
+            self.log.info(f"Not a ZIP File or Corrupt ZIP File: {filename}")
             return False
-        except Exception, e:
+        except Exception as e:
             if type(e) == NotJARException:
-                self.log.info("Not a JAR File: %s" % filename)
+                self.log.info(f"Not a JAR File: {filename}")
                 raise
 
-            self.log.exception("Caught an exception while analysing the file %s. [%s]" % (filename, e))
+            self.log.exception(f"Caught an exception while analysing the file {filename}. [{e}]")
             return False
         finally:
             try:
@@ -184,9 +123,8 @@ class Espresso(ServiceBase):
             with open(decompiled_path, "rb") as decompiled_file:
                 return decompiled_file.read()
         else:
-            cfr = Popen(["java", "-jar", self.cfr, path_to_file], stdout=PIPE, stderr=PIPE,
-                        preexec_fn=set_death_signal())
-            stdout, _ = cfr.communicate()
+            stdout, _ = Popen(["java", "-jar", self.cfr, path_to_file],
+                        stdout=PIPE, stderr=PIPE, preexec_fn=set_death_signal()).communicate()
 
             if len(stdout) > 0 and "Decompiled with CFR" in stdout[:0x24]:
                 return stdout
@@ -247,7 +185,7 @@ class Espresso(ServiceBase):
             cur_file.seek(0)
             cur_file_full_data = cur_file.read()
 
-            # Analyse file for suspicious funtions
+            # Analyse file for suspicious functions
             if self.do_class_analysis(cur_file_full_data):
                 self.decompile_class(cur_file_path, supplementary_files)
 
@@ -256,18 +194,13 @@ class Espresso(ServiceBase):
             cur_file.seek(0)
             first_256 = cur_file.read(256)
 
-            ob_res = {"score": SCORE["VHIGH"], "text": ["Class file ", cf,
-                                                        " doesn't have the normal class files "
-                                                        "magic bytes. The file was re-submitted for analysis."
-                                                        " Here are the first 256 bytes "
-                                                        "of the file:"], "files": [cur_file_path],
-                      "lines": [], "children": [], "tags": [],
-                      "score_condition": None, "condition": None, "type": TEXT_FORMAT.MEMORY_DUMP}
-            ob_res['lines'].append(hexdump(first_256))
-            ob_res['tags'].append({"type": TAG_TYPE['FILE_SUMMARY'],
-                                   "text": "Suspicious Java class", "score": TAG_WEIGHT['LOW']})
+            ob_res = ResultSection(
+                f"Class file {cf} doesn't have the normal class files magic bytes. Here are the first 256 bytes.",
+                body=hexdump(first_256), body_format=BODY_FORMAT.MEMORY_DUMP)
+            ob_res.set_heuristic(3)
+            ob_res.add_tag('file.behaviour', "Suspicious Java Class")
             imp_res_list.append(ob_res)
-            file_res.report_heuristic(Espresso.AL_Espresso_003)
+
 
     def decompile_jar(self, path_to_file, target_dir):
         cfr = Popen(["java", "-jar", self.cfr, "--analyseas", "jar", "--outputdir", target_dir, path_to_file],
@@ -277,17 +210,17 @@ class Espresso(ServiceBase):
     def execute(self, request):
         request.result = Result()
         request.set_service_context(self.get_tool_version())
-        temp_filename = request.download()
+        temp_filename = request.file_path
         filename = os.path.basename(temp_filename)
-        extract_dir = os.path.join(self.working_directory, "%s_extracted" % filename)
-        decompiled_dir = os.path.join(self.working_directory, "%s_decompiled" % filename)
+        extract_dir = os.path.join(self.working_directory, f"{filename}_extracted")
+        decompiled_dir = os.path.join(self.working_directory, f"{filename}_decompiled")
         file_res = request.result
         new_files = []
         supplementary_files = []
         imp_res_list = []
         res_list = []
 
-        if request.tag == "java/jar":
+        if request.file_type == "java/jar":
             self.decompile_jar(temp_filename, decompiled_dir)
             if self.jar_extract(temp_filename, extract_dir):
                 # Analysis properties
@@ -298,7 +231,7 @@ class Espresso(ServiceBase):
                 self.applet_found = 0
 
                 for root, _, files in os.walk(extract_dir.encode('utf-8')):
-                    logging.info("Extracted: %s - %s" % (root, files))
+                    logging.info(f"Extracted: {root} - {files}")
                     for cf in files:
                         cur_file_path = os.path.join(root.decode('utf-8'), cf.decode('utf-8'))
                         cur_file = open(cur_file_path, "rb")
@@ -309,64 +242,59 @@ class Espresso(ServiceBase):
                         ##############################
                         cur_ext = os.path.splitext(cf)[1][1:].upper()
                         if start_bytes[:2] == "MZ":
-                            mz_res = {"score": SCORE["VHIGH"],
-                                      "text": ["Embedded executable file found: ",
-                                               cf, ". There may be a malicious intent."],
-                                      "files": [], "lines": [], "children": [], "tags": [],
-                                      "score_condition": APPLET_MZ, "condition": None}
-                            mz_res['tags'].append({"type": TAG_TYPE['FILE_SUMMARY'], "text": "Embedded PE",
-                                                   "score": TAG_WEIGHT['LOW']})
-                            file_res.report_heuristic(Espresso.AL_Espresso_001)
+                            mz_res = ResultSection(f"Embedded executable file found: {cf}"
+                                                   "There may be a malicious intent.") #APPLET_MZ
+                            mz_res.set_heuristic(1)
+                            mz_res.add_tag('file.behaviour', "Embedded PE")
                             imp_res_list.append(mz_res)
+
                         ##############################
                         # Launchable in JAR
                         ##############################
                         elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                            l_res = {"score": SCORE["VHIGH"], "text": ["Launch-able file type found: ",
-                                                                       cf, ". There may be a malicious intent."],
-                                     "files": [], "lines": [],
-                                     "children": [], "tags": [], "score_condition": APPLET_MZ, "condition": None}
-                            l_res['tags'].append({"type": TAG_TYPE['FILE_SUMMARY'], "text": "Launch-able file in JAR",
-                                                  "score": TAG_WEIGHT['LOW']})
-                            file_res.report_heuristic(Espresso.AL_Espresso_002)
+                            l_res = ResultSection(f"Launch-able file type found: {cf}"
+                                                   "There may be a malicious intent.") #APPLET_MZ
+                            l_res.set_heuristic(2)
+                            l_res.add_tag('file.behaviour', "Launch-able file in JAR")
                             imp_res_list.append(l_res)
 
-                        if cf.upper().endswith(".CLASS"):
+                        if cur_file_path.upper().endswith('.CLASS'):
                             self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
                                                     start_bytes, imp_res_list, supplementary_files)
 
                         try:
                             cur_file.close()
                         except:
-                            pass
 
-                # Add file Analysis results to the list
-                cl_score = 0
+
+                res = ResultSection("Analysis of the JAR file")
+
+                #Add file Analysis results to the list
+                heuristic_set = False
                 if self.runtime_found > 0:
-                    cl_score += SCORE["MED"]
-                    file_res.report_heuristic(Espresso.AL_Espresso_008)
+                    res.set_heuristic(8)
+                    heuristic_set = True
                 if self.applet_found > 0:
-                    cl_score += SCORE["MED"]
-                    file_res.report_heuristic(Espresso.AL_Espresso_004)
+                    res.set_heuristic(4)
+                    heuristic_set = True
                 if self.classloader_found > 0:
-                    cl_score += SCORE["LOW"]
-                    file_res.report_heuristic(Espresso.AL_Espresso_005)
+                    res.set_heuristic(5)
+                    heuristic_set = True
                 if self.security_found > 0:
-                    cl_score += SCORE["LOW"]
-                    file_res.report_heuristic(Espresso.AL_Espresso_006)
+                    res.set_heuristic(6)
+                    heuristic_set = True
                 if self.url_found > 0:
-                    cl_score += SCORE["LOW"]
-                    file_res.report_heuristic(Espresso.AL_Espresso_007)
+                    res.set_heuristic(7)
+                    heuristic_set = True
 
-                res = ResultSection(0, "Analysis of the JAR file")
-                if cl_score > 0:
+                if heuristic_set:
                     res.add_line("All suspicious class files where saved as supplementary files.")
-                res_class = ResultSection(cl_score, "[Suspicious classes]", parent=res)
-                res_class.add_line("java/lang/Runtime: %s" % self.runtime_found)
-                res_class.add_line("java/applet/Applet: %s" % self.applet_found)
-                res_class.add_line("java/lang/ClassLoader: %s" % self.classloader_found)
-                res_class.add_line("java/security/*: %s" % self.security_found)
-                res_class.add_line("java/net/URL: %s" % self.url_found)
+                res_class = ResultSection("[Suspicious classes]", parent=res)
+                res_class.add_line(f"java/lang/Runtime: {self.runtime_found}")
+                res_class.add_line(f"java/applet/Applet: {self.applet_found}")
+                res_class.add_line(f"java/lang/ClassLoader: {self.classloader_found}")
+                res_class.add_line(f"java/security/*: {self.security_found}")
+                res_class.add_line(f"java/net/URL: {self.url_found}")
                 res_list.append(res)
 
         # Add results if any
@@ -377,7 +305,7 @@ class Espresso(ServiceBase):
         # Submit embedded files
         if len(new_files) > 0:
             new_files = sorted(list(set(new_files)))
-            txt = "Extracted from %s file %s" % ("JAR", filename)
+            txt = f"Extracted from {'JAR'} file {filename}"
             for embed in new_files:
                 request.add_extracted(embed, txt,
                                       embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""))
@@ -385,22 +313,21 @@ class Espresso(ServiceBase):
         if len(supplementary_files) > 0:
             supplementary_files = sorted(list(set(supplementary_files)))
             for original, decompiled in supplementary_files:
-                txt = "Decompiled %s" % original.replace(extract_dir + "/", "").replace(decompiled_dir + "/", "")
+                txt = f"Decompiled {original.replace(extract_dir + '/', '').replace(decompiled_dir + '/', '')}"
                 request.add_supplementary(decompiled, txt,
                                           decompiled.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""))
-
     def recurse_add_res(self, file_res, res_list, new_files, parent=None):
         for res_dic in res_list:
             # Check if condition is OK
             if self.pass_condition(res_dic["condition"]):
-                res_dic['score'] = self.score_alteration(res_dic['score_condition'], res_dic['score'])
-                res = ResultSection(res_dic['score'], title_text=res_dic['text'],
-                                    classification=res_dic.get('classification', Classification.UNRESTRICTED),
-                                    parent=parent, body_format=res_dic.get('type', None))
+                #res_dic['score'] = self.score_alteration(res_dic['score_condition'], res_dic['score'])
+                #res = ResultSection(res_dic['score'], title_text=res_dic['text'],
+                                    #classification=res_dic.get('classification', Classification.UNRESTRICTED),
+                                    #parent=parent, body_format=res_dic.get('type', None))
                 # Add Tags
-                for res_tag in res_dic['tags']:
-                    file_res.add_tag(res_tag['type'], res_tag['text'], res_tag['score'],
-                                     classification=res_tag.get('classification', Classification.UNRESTRICTED))
+                #for res_tag in res_dic['tags']:
+                    #file_res.add_tag(res_tag['type'], res_tag['text'], res_tag['score'],
+                                     #classification=res_tag.get('classification', Classification.UNRESTRICTED))
                 # Add Line
                 for res_line in res_dic['lines']:
                     res.add_line(res_line)
