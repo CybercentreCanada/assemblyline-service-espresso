@@ -319,15 +319,15 @@ class Espresso(ServiceBase):
     def recurse_add_res(self, file_res, res_list, new_files, parent=None):
         for res_dic in res_list:
             # Check if condition is OK
-            if self.pass_condition(res_dic["condition"]):
-                #res_dic['score'] = self.score_alteration(res_dic['score_condition'], res_dic['score'])
-                #res = ResultSection(res_dic['score'], title_text=res_dic['text'],
-                                    #classification=res_dic.get('classification', Classification.UNRESTRICTED),
-                                    #parent=parent, body_format=res_dic.get('type', None))
+            if self.pass_condition(res_dic["condition"]): # TODO CONFIGURE SCORE CONDITION
+                res_dic['score'] = self.score_alteration(res_dic['score_condition'], res_dic['score'])
+                res = ResultSection(res_dic['score'], title_text=res_dic['text'],
+                                    classification=res_dic.get('classification', Classification.UNRESTRICTED),
+                                    parent=parent, body_format=res_dic.get('type', None))
                 # Add Tags
-                #for res_tag in res_dic['tags']:
-                    #file_res.add_tag(res_tag['type'], res_tag['text'], res_tag['score'],
-                                     #classification=res_tag.get('classification', Classification.UNRESTRICTED))
+                for res_tag in res_dic['tags']:
+                    file_res.add_tag(res_tag['type'], res_tag['text'], res_tag['score'],
+                                     classification=res_tag.get('classification', Classification.UNRESTRICTED))
                 # Add Line
                 for res_line in res_dic['lines']:
                     res.add_line(res_line)
