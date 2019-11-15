@@ -1,0 +1,102 @@
+name: Espresso
+version: 1
+description: >-
+  This service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.
+
+accepts: java/jar
+rejects: empty|metadata/.*r
+
+stage: CORE
+category: Static Analysis
+
+file_required: true
+timeout: 180
+disable_cache: false
+
+enabled: true
+is_external: false
+licence_count: 0
+
+heuristics:
+  - heur_id: 1
+    name: Embedded PE, mz in applet
+    score: 500
+    filetype: java/jar
+    description: If the first two bytes of the JAR file are MZ there is an embedded executable detected.
+
+  - heur_id: 2
+    name: Embedded PE
+    score: 100
+    filetype: java/jar
+    description: If the first two bytes of the JAR file are MZ there is an embedded executable detected.
+
+  - heur_id: 3
+    name: Launchable File in JAR, mz in applet
+    score: 500
+    filetype: java/jar
+    description: >-
+      If the file path has any of the following extensions:
+          'BAT' - DOS/Windows batch file
+          'CMD' - Windows Command
+          'COM' - DOS Command
+          'EXE' - DOS/Windows executable
+          'DLL' - Windows library
+          'LNK' - Windows shortcut
+          'SCR' - Windows screensaver
+      then there is a launchable file found inside the JAR.
+
+  - heur_id: 4
+    name: Launchable File in JAR,
+    score: 100
+    filetype: java/jar
+    description: >-
+      If the file path has any of the following extensions:
+          'BAT' - DOS/Windows batch file
+          'CMD' - Windows Command
+          'COM' - DOS Command
+          'EXE' - DOS/Windows executable
+          'DLL' - Windows library
+          'LNK' - Windows shortcut
+          'SCR' - Windows screensaver
+      then there is a launchable file found inside the JAR.
+
+  - heur_id: 5
+    name: Encoding and Magic Bytes
+    score: 500
+    filetype: java/jar
+    description: The file doesnt have the normal class file magic bytes.
+
+  - heur_id: 6
+    name: java/applet/Applet
+    score: 50
+    filetype: java/jar
+    description: Looking for the string "java/applet/Applet" in the file
+
+  - heur_id: 7
+    name: ClassLoader
+    score: 10
+    filetype: java/jar
+    description: Looking for the string "ClassLoader" in the file
+
+  - heur_id: 8
+    name: /security/
+    score: 10
+    filetype: java/jar
+    description: Looking for the string "/security/" in the file
+
+  - heur_id: 9
+    name: net/URL
+    score: 10
+    filetype: java/jar
+    description: Looking for the string "net/URL" in the file
+
+  - heur_id: 10
+    name: java/lang/Runtime
+    score: 50
+    filetype: java/jar
+    description: Looking for the string "java/lang/Runtime" in the file
+
+docker_config:
+  image: cccs/assemblyline-service-espresso:latest
+  cpu_cores: 0.8
+  ram_mb: 1024
