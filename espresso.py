@@ -8,9 +8,8 @@ from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import translate_str
 from assemblyline_v4_service.common.base import ServiceBase
-from assemblyline_v4_service.common.utils import set_death_signal
 from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT
-
+from assemblyline_v4_service.common.utils import set_death_signal
 
 G_LAUNCHABLE_EXTENSIONS = [
     'BAT',  # DOS/Windows batch file
@@ -35,7 +34,7 @@ class Espresso(ServiceBase):
 
     def __init__(self, config=None):
         super(Espresso, self).__init__(config)
-        self.cfr = self.config.get("cfr_path")
+        self.cfr = "/opt/al/support/espresso/cfr.jar"
         self.applet_found = 0
         self.classloader_found = 0
         self.security_found = 0
@@ -194,11 +193,15 @@ class Espresso(ServiceBase):
             cur_file.seek(0)
             first_256 = cur_file.read(256)
 
-            ob_res = ResultSection(
-                f"Class file {cf} doesn't have the normal class files magic bytes. Here are the first 256 bytes.",
-                body=hexdump(first_256), body_format=BODY_FORMAT.MEMORY_DUMP)
-            ob_res.set_heuristic(3)
-            ob_res.add_tag('file.behaviour', "Suspicious Java Class")
+            ob_res = dict(
+                title_text=f"Class file {cf} doesn't have the normal class files magic bytes. "
+                           "The file was re-submitted for analysis. Here are the first 256 bytes:",
+                body=hexdump(first_256),
+                body_format=BODY_FORMAT.MEMORY_DUMP,
+                heur_id=3,
+                tags=[('file.behaviour', "Suspicious Java Class")],
+                files=[cur_file_path],
+            )
             imp_res_list.append(ob_res)
 
 
@@ -242,20 +245,26 @@ class Espresso(ServiceBase):
                         ##############################
                         cur_ext = os.path.splitext(cf)[1][1:].upper()
                         if start_bytes[:2] == "MZ":
-                            mz_res = ResultSection(f"Embedded executable file found: {cf}"
-                                                   "There may be a malicious intent.") #APPLET_MZ
-                            mz_res.set_heuristic(1)
-                            mz_res.add_tag('file.behaviour', "Embedded PE")
+                            mz_res = dict(
+                                title_text=f"Embedded executable file found: {cf} "
+                                           "There may be a malicious intent.",
+                                heur_id=1,
+                                tags=[('file.behaviour', "Embedded PE")],
+                                score_condition=APPLET_MZ,
+                            )
                             imp_res_list.append(mz_res)
 
                         ##############################
                         # Launchable in JAR
                         ##############################
                         elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                            l_res = ResultSection(f"Launch-able file type found: {cf}"
-                                                   "There may be a malicious intent.") #APPLET_MZ
-                            l_res.set_heuristic(2)
-                            l_res.add_tag('file.behaviour', "Launch-able file in JAR")
+                            l_res = dict(
+                                title_text=f"Launch-able file type found: {cf}"
+                                           "There may be a malicious intent.",
+                                heur_id=2,
+                                tags=[('file.behaviour', "Launch-able file in JAR")],
+                                score_condition=APPLET_MZ,
+                            )
                             imp_res_list.append(l_res)
 
                         if cur_file_path.upper().endswith('.CLASS'):
@@ -265,26 +274,26 @@ class Espresso(ServiceBase):
                         try:
                             cur_file.close()
                         except:
-
+                            pass
 
                 res = ResultSection("Analysis of the JAR file")
 
                 #Add file Analysis results to the list
                 heuristic_set = False
                 if self.runtime_found > 0:
-                    res.set_heuristic(8)
+                    res.set_heuristic(10)
                     heuristic_set = True
                 if self.applet_found > 0:
-                    res.set_heuristic(4)
-                    heuristic_set = True
-                if self.classloader_found > 0:
-                    res.set_heuristic(5)
-                    heuristic_set = True
-                if self.security_found > 0:
                     res.set_heuristic(6)
                     heuristic_set = True
-                if self.url_found > 0:
+                if self.classloader_found > 0:
                     res.set_heuristic(7)
+                    heuristic_set = True
+                if self.security_found > 0:
+                    res.set_heuristic(8)
+                    heuristic_set = True
+                if self.url_found > 0:
+                    res.set_heuristic(9)
                     heuristic_set = True
 
                 if heuristic_set:
@@ -316,23 +325,30 @@ class Espresso(ServiceBase):
                 txt = f"Decompiled {original.replace(extract_dir + '/', '').replace(decompiled_dir + '/', '')}"
                 request.add_supplementary(decompiled, txt,
                                           decompiled.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""))
+
     def recurse_add_res(self, file_res, res_list, new_files, parent=None):
         for res_dic in res_list:
             # Check if condition is OK
-            if self.pass_condition(res_dic["condition"]): # TODO CONFIGURE SCORE CONDITION
-                res_dic['score'] = self.score_alteration(res_dic['score_condition'], res_dic['score'])
-                res = ResultSection(res_dic['score'], title_text=res_dic['text'],
+            if self.pass_condition(res_dic.get("condition", None)):
+                res = ResultSection(res_dic['title_text'],
                                     classification=res_dic.get('classification', Classification.UNRESTRICTED),
-                                    parent=parent, body_format=res_dic.get('type', None))
+                                    parent=parent, body_format=res_dic.get('body_format', None))
+                heur_id = self.heuristic_alteration(res_dic.get('score_condition', None), res_dic['heur_id'])
+                res.set_heuristic(heur_id)
+
                 # Add Tags
-                for res_tag in res_dic['tags']:
-                    file_res.add_tag(res_tag['type'], res_tag['text'], res_tag['score'],
-                                     classification=res_tag.get('classification', Classification.UNRESTRICTED))
-                # Add Line
-                for res_line in res_dic['lines']:
-                    res.add_line(res_line)
+                tags = res_dic.get('tags', [])
+                for res_tag in tags:
+                    res.add_tag(res_tag[0], res_tag[1])
+
+                # Add body
+                body = res_dic.get('body', None)
+                if body:
+                    res.body = body
+
                 # File for resubmit
-                for res_file in res_dic['files']:
+                files = res_dic.get('files', [])
+                for res_file in files:
                     if isinstance(res_file, tuple):
                         res_file = res_file[1]
                     new_files.append(res_file)
@@ -353,11 +369,11 @@ class Espresso(ServiceBase):
 
         return False
 
-    def score_alteration(self, score_condition, score):
+    def heuristic_alteration(self, score_condition, heur_id):
         if score_condition is None:
-            return score
+            return heur_id
         if score_condition == APPLET_MZ:
             if self.applet_found > 0:
-                return 500
+                return heur_id
             else:
-                return 100
+                return heur_id + 1

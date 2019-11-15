@@ -1,9 +1,9 @@
 name: Espresso
 version: 1
 description: >-
-  This service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior
+  This service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.
 
-accepts: java/ja
+accepts: java/jar
 rejects: empty|metadata/.*r
 
 stage: CORE
@@ -17,18 +17,21 @@ enabled: true
 is_external: false
 licence_count: 0
 
-config:
-  cfr_path: /opt/al/support/cfr/cfr.jar
-
 heuristics:
   - heur_id: 1
-    name: Embedded PE
+    name: Embedded PE, mz in applet
     score: 500
     filetype: java/jar
     description: If the first two bytes of the JAR file are MZ there is an embedded executable detected.
 
   - heur_id: 2
-    name: Launchable File in JAR
+    name: Embedded PE
+    score: 100
+    filetype: java/jar
+    description: If the first two bytes of the JAR file are MZ there is an embedded executable detected.
+
+  - heur_id: 3
+    name: Launchable File in JAR, mz in applet
     score: 500
     filetype: java/jar
     description: >-
@@ -42,37 +45,52 @@ heuristics:
           'SCR' - Windows screensaver
       then there is a launchable file found inside the JAR.
 
-  - heur_id: 3
+  - heur_id: 4
+    name: Launchable File in JAR,
+    score: 100
+    filetype: java/jar
+    description: >-
+      If the file path has any of the following extensions:
+          'BAT' - DOS/Windows batch file
+          'CMD' - Windows Command
+          'COM' - DOS Command
+          'EXE' - DOS/Windows executable
+          'DLL' - Windows library
+          'LNK' - Windows shortcut
+          'SCR' - Windows screensaver
+      then there is a launchable file found inside the JAR.
+
+  - heur_id: 5
     name: Encoding and Magic Bytes
     score: 500
     filetype: java/jar
     description: The file doesnt have the normal class file magic bytes.
 
-  - heur_id: 4
+  - heur_id: 6
     name: java/applet/Applet
     score: 50
     filetype: java/jar
     description: Looking for the string "java/applet/Applet" in the file
 
-  - heur_id: 5
+  - heur_id: 7
     name: ClassLoader
     score: 10
     filetype: java/jar
     description: Looking for the string "ClassLoader" in the file
 
-  - heur_id: 6
+  - heur_id: 8
     name: /security/
     score: 10
     filetype: java/jar
     description: Looking for the string "/security/" in the file
 
-  - heur_id: 7
+  - heur_id: 9
     name: net/URL
     score: 10
     filetype: java/jar
     description: Looking for the string "net/URL" in the file
 
-  - heur_id: 8
+  - heur_id: 10
     name: java/lang/Runtime
     score: 50
     filetype: java/jar
