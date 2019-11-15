@@ -8,7 +8,7 @@ from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import translate_str
 from assemblyline_v4_service.common.base import ServiceBase
-from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT
+from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT, Heuristic
 from assemblyline_v4_service.common.utils import set_death_signal
 
 G_LAUNCHABLE_EXTENSIONS = [
@@ -26,8 +26,10 @@ APPLET_MZ = 'mz_in_applet'
 
 Classification = forge.get_classification()
 
+
 class NotJARException(Exception):
     pass
+
 
 # noinspection PyBroadException
 class Espresso(ServiceBase):
@@ -42,7 +44,7 @@ class Espresso(ServiceBase):
         self.runtime_found = 0
 
     def get_tool_version(self):
-        return "CFR: 0.110"
+        return "CFR: 0.148"
 
     def start(self):
         if not os.path.isfile(self.cfr):
@@ -90,7 +92,7 @@ class Espresso(ServiceBase):
                         o.write(zf_content)
                 except Exception as e:
                     self.log.exception(f"Failed at extracting files from the JAR "
-                                       f"({filename.encode('utf-8') + '::' + uni_zfname}). Error: {e}")
+                                       f"({filename.encode('utf-8')} :: + {uni_zfname}). Error: {str(e)}")
                     return False
                 finally:
                     try:
@@ -123,9 +125,9 @@ class Espresso(ServiceBase):
                 return decompiled_file.read()
         else:
             stdout, _ = Popen(["java", "-jar", self.cfr, path_to_file],
-                        stdout=PIPE, stderr=PIPE, preexec_fn=set_death_signal()).communicate()
+                              stdout=PIPE, stderr=PIPE, preexec_fn=set_death_signal()).communicate()
 
-            if len(stdout) > 0 and "Decompiled with CFR" in stdout[:0x24]:
+            if len(stdout) > 0 and b"Decompiled with CFR" in stdout[:0x24]:
                 return stdout
             else:
                 return None
@@ -156,23 +158,23 @@ class Espresso(ServiceBase):
 
     def do_class_analysis(self, data):
         has_interesting_attributes = False
-        if "java/applet/Applet" in data:
+        if b"java/applet/Applet" in data:
             self.applet_found += 1
             has_interesting_attributes = True
 
-        if "ClassLoader" in data:
+        if b"ClassLoader" in data:
             self.classloader_found += 1
             has_interesting_attributes = True
 
-        if "/security/" in data:
+        if b"/security/" in data:
             self.security_found += 1
             has_interesting_attributes = True
 
-        if "net/URL" in data:
+        if b"net/URL" in data:
             self.url_found += 1
             has_interesting_attributes = True
 
-        if "java/lang/Runtime" in data:
+        if b"java/lang/Runtime" in data:
             self.runtime_found += 1
             has_interesting_attributes = True
 
@@ -180,7 +182,7 @@ class Espresso(ServiceBase):
 
     # noinspection PyUnusedLocal
     def analyse_class_file(self, file_res, cf, cur_file, cur_file_path, start_bytes, imp_res_list, supplementary_files):
-        if start_bytes[:4] == "\xCA\xFE\xBA\xBE":
+        if start_bytes[:4] == b"\xCA\xFE\xBA\xBE":
             cur_file.seek(0)
             cur_file_full_data = cur_file.read()
 
@@ -203,7 +205,6 @@ class Espresso(ServiceBase):
                 files=[cur_file_path],
             )
             imp_res_list.append(ob_res)
-
 
     def decompile_jar(self, path_to_file, target_dir):
         cfr = Popen(["java", "-jar", self.cfr, "--analyseas", "jar", "--outputdir", target_dir, path_to_file],
@@ -244,7 +245,7 @@ class Espresso(ServiceBase):
                         # Executables in JAR
                         ##############################
                         cur_ext = os.path.splitext(cf)[1][1:].upper()
-                        if start_bytes[:2] == "MZ":
+                        if start_bytes[:2] == b"MZ":
                             mz_res = dict(
                                 title_text=f"Embedded executable file found: {cf} "
                                            "There may be a malicious intent.",
@@ -278,32 +279,47 @@ class Espresso(ServiceBase):
 
                 res = ResultSection("Analysis of the JAR file")
 
-                #Add file Analysis results to the list
-                heuristic_set = False
-                if self.runtime_found > 0:
-                    res.set_heuristic(10)
-                    heuristic_set = True
-                if self.applet_found > 0:
-                    res.set_heuristic(6)
-                    heuristic_set = True
-                if self.classloader_found > 0:
-                    res.set_heuristic(7)
-                    heuristic_set = True
-                if self.security_found > 0:
-                    res.set_heuristic(8)
-                    heuristic_set = True
-                if self.url_found > 0:
-                    res.set_heuristic(9)
-                    heuristic_set = True
+                # Add file Analysis results to the list
 
-                if heuristic_set:
-                    res.add_line("All suspicious class files where saved as supplementary files.")
+                if self.runtime_found > 0 \
+                        or self.applet_found > 0 \
+                        or self.classloader_found > 0 \
+                        or self.security_found > 0 \
+                        or self.url_found > 0:
+                    res.add_line("All suspicious class files were saved as supplementary files.")
+                    
                 res_class = ResultSection("[Suspicious classes]", parent=res)
-                res_class.add_line(f"java/lang/Runtime: {self.runtime_found}")
-                res_class.add_line(f"java/applet/Applet: {self.applet_found}")
-                res_class.add_line(f"java/lang/ClassLoader: {self.classloader_found}")
-                res_class.add_line(f"java/security/*: {self.security_found}")
-                res_class.add_line(f"java/net/URL: {self.url_found}")
+
+                if self.runtime_found > 0:
+                    ResultSection("Runtime Found",
+                                  body=f"java/lang/Runtime: {self.runtime_found}",
+                                  heuristic=Heuristic(10),
+                                  parent=res_class)
+
+                if self.applet_found > 0:
+                    ResultSection("Applet Found",
+                                  body=f"java/applet/Applet: {self.applet_found}",
+                                  heuristic=Heuristic(6),
+                                  parent=res_class)
+
+                if self.classloader_found > 0:
+                    ResultSection("Classloader Found",
+                                  body=f"java/lang/ClassLoader: {self.classloader_found}",
+                                  heuristic=Heuristic(7),
+                                  parent=res_class)
+
+                if self.security_found > 0:
+                    ResultSection("Security Found",
+                                  body=f"java/security/*: {self.security_found}",
+                                  heuristic=Heuristic(8),
+                                  parent=res_class)
+
+                if self.url_found > 0:
+                    ResultSection("URL Found",
+                                  body=f"java/net/URL: {self.url_found}",
+                                  heuristic=Heuristic(9),
+                                  parent=res_class)
+
                 res_list.append(res)
 
         # Add results if any
@@ -352,9 +368,6 @@ class Espresso(ServiceBase):
                     if isinstance(res_file, tuple):
                         res_file = res_file[1]
                     new_files.append(res_file)
-
-                # Recurse on children
-                self.recurse_add_res(file_res, res_dic["children"], new_files, res)
 
                 # Add to file res if root result
                 if parent is None:
