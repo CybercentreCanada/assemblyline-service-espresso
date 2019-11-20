@@ -332,15 +332,16 @@ class Espresso(ServiceBase):
             new_files = sorted(list(set(new_files)))
             txt = f"Extracted from {'JAR'} file {filename}"
             for embed in new_files:
-                request.add_extracted(embed, txt,
-                                      embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""))
+                request.add_extracted(embed, embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
+                                      txt)
 
         if len(supplementary_files) > 0:
             supplementary_files = sorted(list(set(supplementary_files)))
             for original, decompiled in supplementary_files:
                 txt = f"Decompiled {original.replace(extract_dir + '/', '').replace(decompiled_dir + '/', '')}"
-                request.add_supplementary(decompiled, txt,
-                                          decompiled.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""))
+                request.add_supplementary(decompiled,
+                                          decompiled.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
+                                          txt)
 
     def recurse_add_res(self, file_res, res_list, new_files, parent=None):
         for res_dic in res_list:
