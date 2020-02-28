@@ -2,7 +2,7 @@ FROM cccs/assemblyline-v4-service-base:latest
 
 ENV SERVICE_PATH espresso.Espresso
 
-RUN apt-get update && apt-get install -y openjdk-8-jre-headless java-common wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openjdk-11-jre-headless java-common wget && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/al/support/espresso
 
