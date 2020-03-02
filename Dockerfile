@@ -5,7 +5,7 @@ ENV SERVICE_PATH espresso.Espresso
 # The following line fix an issue with openjdk installation
 RUN mkdir -p /usr/share/man/man1
 
-RUN apt-get update && apt-get install -y openjdk-11-jre-headless java-common wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openjdk-8-jre-headless java-common wget && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/al/support/espresso
 
