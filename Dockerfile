@@ -2,6 +2,8 @@ FROM cccs/assemblyline-v4-service-base:latest
 
 ENV SERVICE_PATH espresso.Espresso
 
+USER root
+
 # The following line fix an issue with openjdk installation
 RUN mkdir -p /usr/share/man/man1
 
