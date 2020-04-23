@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y openjdk-8-jre-headless java-common wget
 
 RUN mkdir -p /opt/al/support/espresso
 
-RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/0.148/cfr-0.148.jar
+RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/0.149/cfr-0.149.jar
 
 # Switch to assemblyline user
 USER assemblyline

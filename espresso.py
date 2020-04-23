@@ -44,7 +44,7 @@ class Espresso(ServiceBase):
         self.runtime_found = 0
 
     def get_tool_version(self):
-        return "CFR: 0.148"
+        return "CFR: 0.149"
 
     def start(self):
         if not os.path.isfile(self.cfr):
