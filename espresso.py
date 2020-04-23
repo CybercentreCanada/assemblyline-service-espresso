@@ -43,7 +43,8 @@ class Espresso(ServiceBase):
         self.url_found = 0
         self.runtime_found = 0
 
-    def get_tool_version(self):
+    @staticmethod
+    def get_tool_version():
         return "CFR: 0.148"
 
     def start(self):
@@ -59,6 +60,7 @@ class Espresso(ServiceBase):
             unknown_charset_counter = 0
             for zfname in zf.namelist():
                 uni_zfname = ""
+                o = None
                 try:
                     zf_info = zf.getinfo(zfname)
 
@@ -83,7 +85,7 @@ class Espresso(ServiceBase):
 
                         try:
                             o = open(unzipped_filename, 'wb')
-                        except:
+                        except Exception:
                             # just in case there was invalid char ...
                             uni_zfname = f"unknown_charset_filename_{unknown_charset_counter}"
                             unknown_charset_counter += 1
@@ -95,10 +97,11 @@ class Espresso(ServiceBase):
                                        f"({filename.encode('utf-8')} :: + {uni_zfname}). Error: {str(e)}")
                     return False
                 finally:
-                    try:
-                        o.close()
-                    except:
-                        pass
+                    if o is not None:
+                        try:
+                            o.close()
+                        except Exception:
+                            pass
 
         except (IOError, zipfile.BadZipfile):
             self.log.info(f"Not a ZIP File or Corrupt ZIP File: {filename}")
@@ -111,10 +114,11 @@ class Espresso(ServiceBase):
             self.log.exception(f"Caught an exception while analysing the file {filename}. [{e}]")
             return False
         finally:
-            try:
-                zf.close()
-            except:
-                pass
+            if zf is not None:
+                try:
+                    zf.close()
+                except Exception:
+                    pass
 
         return True
 
@@ -238,44 +242,39 @@ class Espresso(ServiceBase):
                     logging.info(f"Extracted: {root} - {files}")
                     for cf in files:
                         cur_file_path = os.path.join(root.decode('utf-8'), cf.decode('utf-8'))
-                        cur_file = open(cur_file_path, "rb")
-                        start_bytes = cur_file.read(24)
+                        with open(cur_file_path, "rb") as cur_file:
+                            start_bytes = cur_file.read(24)
 
-                        ##############################
-                        # Executables in JAR
-                        ##############################
-                        cur_ext = os.path.splitext(cf)[1][1:].upper()
-                        if start_bytes[:2] == b"MZ":
-                            mz_res = dict(
-                                title_text=f"Embedded executable file found: {cf} "
-                                           "There may be a malicious intent.",
-                                heur_id=1,
-                                tags=[('file.behaviour', "Embedded PE")],
-                                score_condition=APPLET_MZ,
-                            )
-                            imp_res_list.append(mz_res)
+                            ##############################
+                            # Executables in JAR
+                            ##############################
+                            cur_ext = os.path.splitext(cf)[1][1:].upper()
+                            if start_bytes[:2] == b"MZ":
+                                mz_res = dict(
+                                    title_text=f"Embedded executable file found: {cf} "
+                                               "There may be a malicious intent.",
+                                    heur_id=1,
+                                    tags=[('file.behaviour', "Embedded PE")],
+                                    score_condition=APPLET_MZ,
+                                )
+                                imp_res_list.append(mz_res)
 
-                        ##############################
-                        # Launchable in JAR
-                        ##############################
-                        elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                            l_res = dict(
-                                title_text=f"Launch-able file type found: {cf}"
-                                           "There may be a malicious intent.",
-                                heur_id=2,
-                                tags=[('file.behaviour', "Launch-able file in JAR")],
-                                score_condition=APPLET_MZ,
-                            )
-                            imp_res_list.append(l_res)
+                            ##############################
+                            # Launchable in JAR
+                            ##############################
+                            elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
+                                l_res = dict(
+                                    title_text=f"Launch-able file type found: {cf}"
+                                               "There may be a malicious intent.",
+                                    heur_id=2,
+                                    tags=[('file.behaviour', "Launch-able file in JAR")],
+                                    score_condition=APPLET_MZ,
+                                )
+                                imp_res_list.append(l_res)
 
-                        if cur_file_path.upper().endswith('.CLASS'):
-                            self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
-                                                    start_bytes, imp_res_list, supplementary_files)
-
-                        try:
-                            cur_file.close()
-                        except:
-                            pass
+                            if cur_file_path.upper().endswith('.CLASS'):
+                                self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
+                                                        start_bytes, imp_res_list, supplementary_files)
 
                 res = ResultSection("Analysis of the JAR file")
 
