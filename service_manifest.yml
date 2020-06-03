@@ -1,5 +1,5 @@
 name: Espresso
-version: 1
+version: $SERVICE_TAG
 description: >-
   This service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.
 
@@ -97,6 +97,6 @@ heuristics:
     description: Looking for the string "java/lang/Runtime" in the file
 
 docker_config:
-  image: ${REGISTRY}cccs/assemblyline-service-espresso:latest
+  image: ${REGISTRY}cccs/assemblyline-service-espresso:$SERVICE_TAG
   cpu_cores: 1
   ram_mb: 1024
