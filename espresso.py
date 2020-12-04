@@ -348,7 +348,7 @@ class Espresso(ServiceBase):
             if self.pass_condition(res_dic.get("condition", None)):
                 res = ResultSection(res_dic['title_text'],
                                     classification=res_dic.get('classification', Classification.UNRESTRICTED),
-                                    parent=parent, body_format=res_dic.get('body_format', None))
+                                    parent=parent, body_format=res_dic.get('body_format', BODY_FORMAT.TEXT))
                 heur_id = self.heuristic_alteration(res_dic.get('score_condition', None), res_dic['heur_id'])
                 res.set_heuristic(heur_id)
 
