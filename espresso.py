@@ -227,7 +227,7 @@ class Espresso(ServiceBase):
 
         for cert in certs:
 
-            res_cert = ResultSection("Certificate Analysis", body=safe_str(cert),
+            res_cert = ResultSection("Certificate Analysis", body=safe_str(cert.raw),
                                     body_format=BODY_FORMAT.MEMORY_DUMP)
 
             res_cert.add_tag('cert.valid.start', cert.valid_from)
@@ -236,28 +236,26 @@ class Espresso(ServiceBase):
             res_cert.add_tag('cert.owner', cert.owner)
 
             valid_from_splitted = cert.valid_from.split(" ")
-            valid_from_date = " ".join(valid_from_splitted[:-2] + valid_from_splitted[-1:])
-            valid_from_epoch = time.mktime(time.strptime(valid_from_date, "%a %b %d %H:%M:%S %Y"))
+            valid_from_year = int(valid_from_splitted[-1])
 
             valid_to_splitted = cert.valid_to.split(" ")
-            valid_to_date = " ".join(valid_to_splitted[:-2] + valid_to_splitted[-1:])
-            valid_to_epoch = time.mktime(time.strptime(valid_to_date, "%a %b %d %H:%M:%S %Y"))
+            valid_to_year = int(valid_to_splitted[-1])
 
             if cert.owner == cert.issuer:
                 ResultSection("Certificate is self-signed", parent=res_cert,
-                            heuristic=Heuristic(12))
+                            heuristic=Heuristic(11))
 
             if not cert.country:
                 ResultSection("Certificate owner has no country", parent=res_cert,
-                            heuristic=Heuristic(13))
+                            heuristic=Heuristic(12))
 
-            if valid_from_epoch > valid_to_epoch:
+            if valid_from_year > valid_to_year:
                 ResultSection("Certificate expires before validity date starts", parent=res_cert,
-                            heuristic=Heuristic(16))
+                            heuristic=Heuristic(15))
 
-            if (valid_to_epoch - valid_from_epoch) > 30: # same as above
+            if (valid_to_year - valid_from_year) > 30:
                 ResultSection("Certificate valid more then 30 years", parent=res_cert,
-                            heuristic=Heuristic(14))
+                            heuristic=Heuristic(13))
 
             if cert.country:
                 try:
@@ -268,7 +266,7 @@ class Espresso(ServiceBase):
 
                 if len(cert.country) != 2 or is_int_country:
                     ResultSection("Invalid country code in certificate owner", parent=res_cert,
-                                heuristic=Heuristic(15))
+                                heuristic=Heuristic(14))
 
             self.signature_block_certs.append(res_cert)
 
