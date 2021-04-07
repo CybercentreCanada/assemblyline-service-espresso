@@ -6,6 +6,7 @@ import time
 from subprocess import Popen, PIPE, call
 import re
 
+from assemblyline.common.keytool_parse import Certificate, certificate_chain_from_printcert, keytool_printcert
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import translate_str, safe_str
@@ -218,84 +219,63 @@ class Espresso(ServiceBase):
             imp_res_list.append(ob_res)
 
     def validate_certs(self, certs, cur_file, supplementary_files):
-        issuer = ""
-        owner = ""
-        country = ""
-        valid_from = ""
-        valid_to = ""
-        valid_year_end = 0
-        valid_year_start = 0
-        valid_until_date = time.time()
         
-        for cert in  re.split('Certificate\[\d+\]:', certs): # split printcert output incase of certificate chain
-            if cert == '':
-                continue
-            for line in cert.splitlines():
-                if "Owner:" in line:
-                    owner = line.split(": ", 1)[1]
-                    country = owner.split("C=")
-                    if len(country) != 1:
-                        country = country[1]
-                    else:
-                        country = ""
+        certs = certificate_chain_from_printcert(certs)
 
-                if "Issuer:" in line:
-                    issuer = line.split(": ", 1)[1]
+        valid_from_epoch = 0
+        valid_to_epoch = 0
 
-                if "Valid from:" in line:
-                    valid_from = line.split(": ", 1)[1].split(" until:")[0]
-                    valid_to = line.rsplit(": ", 1)[1]
+        for cert in certs:
 
-                    valid_from_splitted = valid_from.split(" ")
-                    valid_to_splitted = valid_to.split(" ")
-
-                    valid_year_start = int(valid_from_splitted[-1])
-                    valid_year_end = int(valid_to_splitted[-1])
-
-                    valid_until = " ".join(valid_to_splitted[:-2] + valid_to_splitted[-1:])
-                    valid_until_date = time.mktime(time.strptime(valid_until, "%a %b %d %H:%M:%S %Y"))
-        
             res_cert = ResultSection("Certificate Analysis", body=safe_str(cert),
                                     body_format=BODY_FORMAT.MEMORY_DUMP)
 
-            res_cert.add_tag('cert.valid.start', valid_from)
-            res_cert.add_tag('cert.valid.end', valid_to)
-            res_cert.add_tag('cert.issuer', issuer)
-            res_cert.add_tag('cert.owner', owner)
+            res_cert.add_tag('cert.valid.start', cert.valid_from)
+            res_cert.add_tag('cert.valid.end', cert.valid_to)
+            res_cert.add_tag('cert.issuer', cert.issuer)
+            res_cert.add_tag('cert.owner', cert.owner)
 
-            if owner == issuer:
+            valid_from_splitted = cert.valid_from.split(" ")
+            valid_from_date = " ".join(valid_from_splitted[:-2] + valid_from_splitted[-1:])
+            valid_from_epoch = time.mktime(time.strptime(valid_from_date, "%a %b %d %H:%M:%S %Y"))
+
+            valid_to_splitted = cert.valid_to.split(" ")
+            valid_to_date = " ".join(valid_to_splitted[:-2] + valid_to_splitted[-1:])
+            valid_to_epoch = time.mktime(time.strptime(valid_to_date, "%a %b %d %H:%M:%S %Y"))
+
+            if cert.owner == cert.issuer:
                 ResultSection("Certificate is self-signed", parent=res_cert,
                             heuristic=Heuristic(12))
 
-            if not country:
+            if not cert.country:
                 ResultSection("Certificate owner has no country", parent=res_cert,
                             heuristic=Heuristic(13))
 
-            if valid_year_start > valid_year_end:
+            if valid_from_epoch > valid_to_epoch:
                 ResultSection("Certificate expires before validity date starts", parent=res_cert,
                             heuristic=Heuristic(16))
 
-            if (valid_year_end - valid_year_start) > 30:
+            if (valid_to_epoch - valid_from_epoch) > 30: # same as above
                 ResultSection("Certificate valid more then 30 years", parent=res_cert,
                             heuristic=Heuristic(14))
 
-            if country:
+            if cert.country:
                 try:
                     int(country)
                     is_int_country = True
                 except Exception:
                     is_int_country = False
 
-                if len(country) != 2 or is_int_country:
+                if len(cert.country) != 2 or is_int_country:
                     ResultSection("Invalid country code in certificate owner", parent=res_cert,
                                 heuristic=Heuristic(15))
+
+            self.signature_block_certs.append(res_cert)
 
             if len(res_cert.subsections) > 0:
                 name = os.path.basename(cur_file)
                 desc = f'JAR Signature Block: {name}'
                 supplementary_files.append( (cur_file.decode('utf-8'), name.decode('utf-8'), desc) )
-
-            self.signature_block_certs.append(res_cert)
 
     def analyse_meta_information(self, file_res, meta_dir, supplementary_files, extract_dir):
         for filename in os.listdir(meta_dir):
@@ -329,12 +309,9 @@ class Espresso(ServiceBase):
                         #         self.manifest_tags.append( ('file.jar.midlet.main_class', midlet_n[2]) )
 
             else:
-                stdout, stderr = Popen(["keytool", "-printcert", "-file", cur_file],
-                                       stderr=PIPE, stdout=PIPE).communicate()
-                stdout = safe_str(stdout)
+                stdout = keytool_printcert(cur_file)
                 if stdout:
-                    if "keytool error" not in stdout:
-                        self.validate_certs(stdout, cur_file, supplementary_files)
+                    self.validate_certs(stdout, cur_file, supplementary_files)
 
 
     def decompile_jar(self, path_to_file, target_dir):
