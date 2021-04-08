@@ -299,14 +299,6 @@ class Espresso(ServiceBase):
                             elif len(main) == 1:
                                 self.manifest_tags.append(('file.jar.main_class', main[0]))
 
-                        # elif f.startswith(b'MIDlet'):
-                        #     if f.endswith(b'Name'):
-                        #         self.manifest_tags.append( ('file.jar.midlet.name', v) )
-                        #     elif re.search(b'\d+$', f):
-                        #         midlet_n = v.split(b',')
-                        #         self.manifest_tags.append( ('file.jar.midlet.midlet_name', midlet_n[0]) )
-                        #         self.manifest_tags.append( ('file.jar.midlet.main_class', midlet_n[2]) )
-
             else:
                 stdout = keytool_printcert(cur_file)
                 if stdout:
@@ -454,8 +446,6 @@ class Espresso(ServiceBase):
             for embed in new_files:
                 request.add_extracted(embed, embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
                                       txt)
-        # for path, name, desc in supplementary_files:
-        #     print(f'---{name}: {type(path)}, {type(name)}, {type(desc)}')
 
         if len(supplementary_files) > 0:
             supplementary_files = sorted(list(set(supplementary_files)))
