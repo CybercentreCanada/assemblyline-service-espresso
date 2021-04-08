@@ -6,13 +6,14 @@ import time
 from subprocess import Popen, PIPE, call
 import re
 
-from assemblyline.common.keytool_parse import Certificate, certificate_chain_from_printcert, keytool_printcert
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import translate_str, safe_str
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT, Heuristic
 from assemblyline_v4_service.common.utils import set_death_signal
+from assemblyline_v4_service.common.keytool_parse import Certificate, certificate_chain_from_printcert, keytool_printcert
+
 
 G_LAUNCHABLE_EXTENSIONS = [
     'BAT',  # DOS/Windows batch file
