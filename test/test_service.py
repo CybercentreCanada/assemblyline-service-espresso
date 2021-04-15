@@ -1,5 +1,7 @@
 import pytest
+import re
 import os
+import json
 import shutil
 
 # Getting absolute paths, names and regexes
@@ -111,7 +113,15 @@ class TestEspresso:
         with open(correct_result_path, "r") as f:
             correct_result = json.loads(f.read())
 
-        
+        # Assert that the appropriate sections of the dict are equal
 
-        pass
+        # Avoiding date in the response
+        test_result_response = test_result.pop("response")
+        correct_result_response = correct_result.pop("response")
+        assert test_result == correct_result
+
+        # Comparing everything in the response except for the date
+        test_result_response.pop("milestones")
+        correct_result_response.pop("milestones")
+        assert test_result_response == correct_result_response    
 
