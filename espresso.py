@@ -220,7 +220,16 @@ class Espresso(ServiceBase):
             imp_res_list.append(ob_res)
 
     def validate_certs(self, certs, cur_file, supplementary_files):
-        
+        """
+        This method tags out of a certificate or certificate chain. The start and 
+        end date, issuer, and owner are all pulled. The certificate itself is included as a
+        supplementary file.
+
+        :param certs: the keytool -printcert string representation of a certificate/certificate chain
+        :param cur_file: the file path of the certificate (to be used in supplementary_files)
+        :param supplementary_files: the services supplementary files
+        :return: 
+        """
         certs = certificate_chain_from_printcert(certs)
 
         valid_from_epoch = 0
@@ -277,9 +286,20 @@ class Espresso(ServiceBase):
                 supplementary_files.append( (cur_file.decode('utf-8'), name.decode('utf-8'), desc) )
 
     def analyse_meta_information(self, file_res, meta_dir, supplementary_files, extract_dir):
+        """
+        this function pulls the meta information out of the META-INF folder.
+        For now it analyzes the manifest file and the certificate(s)
+
+        :param file_res: the service response
+        :param meta_dir: the path of the META-INF folder
+        :param supplementary_files: the service's supplementary files
+        :param extract_dir: where the jar archive was extracted to
+        :return: 
+        """
+        # iterate over all files in META-INF folder
         for filename in os.listdir(meta_dir):
             cur_file = os.path.join(meta_dir, filename)
-            if cur_file.upper().endswith(b'MANIFEST.MF'):
+            if cur_file.upper().endswith(b'MANIFEST.MF'): # handle jar manifest
                 with open(cur_file,  "rb") as manifest_file:
                     lines = []
                     for line in manifest_file:
@@ -287,11 +307,13 @@ class Espresso(ServiceBase):
                             lines[-1]+=line.strip()
                         else:
                             lines.append(line.rstrip())
+
+                    # pull field/value pairs out of manifest file
                     fields = [tuple(line.split(b': ')) for line in lines if b':' in line]
                     for f in fields:
                         if len(f) != 2:
                             continue
-                        if f[0].upper() == b'MAIN-CLASS':
+                        if f[0].upper() == b'MAIN-CLASS': # for now only main-class info extracted
                             main = tuple(f[1].rsplit(b'.', 1))
                             if len(main) == 2:
                                 self.manifest_tags.append(('file.jar.main_class', main[1]))
@@ -301,7 +323,7 @@ class Espresso(ServiceBase):
 
             else:
                 stdout = keytool_printcert(cur_file)
-                if stdout:
+                if stdout: # if stdout isn't None then the file must have been a certificate
                     self.validate_certs(stdout, cur_file, supplementary_files)
 
 
@@ -339,6 +361,7 @@ class Espresso(ServiceBase):
                 for root, _, files in os.walk(extract_dir.encode('utf-8')):
                     logging.info(f"Extracted: {root} - {files}")
 
+                    # if the META-INF folder is encountered
                     if root.upper().endswith(b'META-INF'): # only top level meta
                         self.analyse_meta_information(file_res, root, supplementary_files, extract_dir)
                         continue
