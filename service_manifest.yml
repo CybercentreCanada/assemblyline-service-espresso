@@ -95,6 +95,36 @@ heuristics:
     score: 50
     filetype: java/jar
     description: Looking for the string "java/lang/Runtime" in the file
+  
+  - heur_id: 11
+    name: Self-signed certificate
+    score: 1
+    filetype: java/jar
+    description: This JAR is self-signed.
+
+  - heur_id: 12
+    name: No country in certificate owner
+    score: 100
+    filetype: java/jar
+    description: This JAR's certificate has no country in the owner field.
+
+  - heur_id: 13
+    name: Certificate valid for more than 30 years
+    score: 100
+    filetype: java/jar
+    description: JAR's certificate is valid for more than 30 years. This is highly unlikely.
+
+  - heur_id: 14
+    name: Invalid country code in certificate owner
+    score: 10
+    filetype: java/jar
+    description: JAR's certificate has an invalid country code.
+
+  - heur_id: 15
+    name: Certificate expires before validity date starts
+    score: 500
+    filetype: java/jar
+    description: JAR's certificate is expiring before the certificate validity date.
 
 docker_config:
   image: ${REGISTRY}cccs/assemblyline-service-espresso:$SERVICE_TAG
