@@ -8,11 +8,11 @@ USER root
 # The following line fix an issue with openjdk installation
 RUN mkdir -p /usr/share/man/man1
 
-RUN apt-get update && apt-get install -y wget openjdk-8-jre-headless java-common && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget default-jdk java-common && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/al/support/espresso
 
-RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/0.149/cfr-0.149.jar
+RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/0.151/cfr-0.151.jar
 
 # Switch to assemblyline user
 USER assemblyline
