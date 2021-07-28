@@ -51,7 +51,7 @@ class Espresso(ServiceBase):
 
     @staticmethod
     def get_tool_version(**_):
-        return "CFR: 0.149"
+        return "CFR: 0.151"
 
     def start(self):
         if not os.path.isfile(self.cfr):
@@ -193,7 +193,9 @@ class Espresso(ServiceBase):
         return has_interesting_attributes
 
     # noinspection PyUnusedLocal
-    def analyse_class_file(self, file_res, cf, cur_file, cur_file_path, start_bytes, imp_res_list, supplementary_files, decompiled_dir, extract_dir):
+    def analyse_class_file(
+            self, file_res, cf, cur_file, cur_file_path, start_bytes, imp_res_list, supplementary_files, decompiled_dir,
+            extract_dir):
 
         if start_bytes[:4] == b"\xCA\xFE\xBA\xBE":
             cur_file.seek(0)
@@ -221,14 +223,14 @@ class Espresso(ServiceBase):
 
     def validate_certs(self, certs, cur_file, supplementary_files):
         """
-        This method tags out of a certificate or certificate chain. The start and 
+        This method tags out of a certificate or certificate chain. The start and
         end date, issuer, and owner are all pulled. The certificate itself is included as a
         supplementary file.
 
         :param certs: the keytool -printcert string representation of a certificate/certificate chain
         :param cur_file: the file path of the certificate (to be used in supplementary_files)
         :param supplementary_files: the services supplementary files
-        :return: 
+        :return:
         """
         certs = certificate_chain_from_printcert(certs)
 
@@ -238,7 +240,7 @@ class Espresso(ServiceBase):
         for cert in certs:
 
             res_cert = ResultSection("Certificate Analysis", body=safe_str(cert.raw),
-                                    body_format=BODY_FORMAT.MEMORY_DUMP)
+                                     body_format=BODY_FORMAT.MEMORY_DUMP)
 
             res_cert.add_tag('cert.valid.start', cert.valid_from)
             res_cert.add_tag('cert.valid.end', cert.valid_to)
@@ -253,19 +255,19 @@ class Espresso(ServiceBase):
 
             if cert.owner == cert.issuer:
                 ResultSection("Certificate is self-signed", parent=res_cert,
-                            heuristic=Heuristic(11))
+                              heuristic=Heuristic(11))
 
             if not cert.country:
                 ResultSection("Certificate owner has no country", parent=res_cert,
-                            heuristic=Heuristic(12))
+                              heuristic=Heuristic(12))
 
             if valid_from_year > valid_to_year:
                 ResultSection("Certificate expires before validity date starts", parent=res_cert,
-                            heuristic=Heuristic(15))
+                              heuristic=Heuristic(15))
 
             if (valid_to_year - valid_from_year) > 30:
                 ResultSection("Certificate valid more then 30 years", parent=res_cert,
-                            heuristic=Heuristic(13))
+                              heuristic=Heuristic(13))
 
             if cert.country:
                 try:
@@ -276,14 +278,14 @@ class Espresso(ServiceBase):
 
                 if len(cert.country) != 2 or is_int_country:
                     ResultSection("Invalid country code in certificate owner", parent=res_cert,
-                                heuristic=Heuristic(14))
+                                  heuristic=Heuristic(14))
 
             self.signature_block_certs.append(res_cert)
 
             if len(res_cert.subsections) > 0:
                 name = os.path.basename(cur_file)
                 desc = f'JAR Signature Block: {name}'
-                supplementary_files.append( (cur_file.decode('utf-8'), name.decode('utf-8'), desc) )
+                supplementary_files.append((cur_file.decode('utf-8'), name.decode('utf-8'), desc))
 
     def analyse_meta_information(self, file_res, meta_dir, supplementary_files, extract_dir):
         """
@@ -294,17 +296,17 @@ class Espresso(ServiceBase):
         :param meta_dir: the path of the META-INF folder
         :param supplementary_files: the service's supplementary files
         :param extract_dir: where the jar archive was extracted to
-        :return: 
+        :return:
         """
         # iterate over all files in META-INF folder
         for filename in os.listdir(meta_dir):
             cur_file = os.path.join(meta_dir, filename)
-            if cur_file.upper().endswith(b'MANIFEST.MF'): # handle jar manifest
+            if cur_file.upper().endswith(b'MANIFEST.MF'):  # handle jar manifest
                 with open(cur_file,  "rb") as manifest_file:
                     lines = []
                     for line in manifest_file:
                         if line.startswith((b' ', b'\t')):
-                            lines[-1]+=line.strip()
+                            lines[-1] += line.strip()
                         else:
                             lines.append(line.rstrip())
 
@@ -313,7 +315,7 @@ class Espresso(ServiceBase):
                     for f in fields:
                         if len(f) != 2:
                             continue
-                        if f[0].upper() == b'MAIN-CLASS': # for now only main-class info extracted
+                        if f[0].upper() == b'MAIN-CLASS':  # for now only main-class info extracted
                             main = tuple(f[1].rsplit(b'.', 1))
                             if len(main) == 2:
                                 self.manifest_tags.append(('file.jar.main_class', main[1]))
@@ -323,9 +325,8 @@ class Espresso(ServiceBase):
 
             else:
                 stdout = keytool_printcert(cur_file)
-                if stdout: # if stdout isn't None then the file must have been a certificate
+                if stdout:  # if stdout isn't None then the file must have been a certificate
                     self.validate_certs(stdout, cur_file, supplementary_files)
-
 
     def decompile_jar(self, path_to_file, target_dir):
         cfr = Popen(["java", "-jar", self.cfr, "--analyseas", "jar", "--outputdir", target_dir, path_to_file],
@@ -362,7 +363,7 @@ class Espresso(ServiceBase):
                     logging.info(f"Extracted: {root} - {files}")
 
                     # if the META-INF folder is encountered
-                    if root.upper().endswith(b'META-INF'): # only top level meta
+                    if root.upper().endswith(b'META-INF'):  # only top level meta
                         self.analyse_meta_information(file_res, root, supplementary_files, extract_dir)
                         continue
 
@@ -402,14 +403,14 @@ class Espresso(ServiceBase):
                                 self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
                                                         start_bytes, imp_res_list, supplementary_files,
                                                         decompiled_dir, extract_dir)
-                            
+
                 res = ResultSection("Analysis of the JAR file")
 
                 res_meta = ResultSection("[Meta Information]", parent=res)
                 if len(self.manifest_tags) > 0:
                     res_manifest = ResultSection("Manifest File Information Extract",
-                                    parent=res_meta)
-                    for tag,val in self.manifest_tags:
+                                                 parent=res_meta)
+                    for tag, val in self.manifest_tags:
                         res_manifest.add_tag(tag, val)
 
                 for res_cert in self.signature_block_certs:
@@ -421,7 +422,7 @@ class Espresso(ServiceBase):
                         or self.security_found > 0 \
                         or self.url_found > 0:
                     res.add_line("All suspicious class files were saved as supplementary files.")
-                    
+
                 res_class = ResultSection("[Suspicious classes]", parent=res)
 
                 if self.runtime_found > 0:
@@ -455,7 +456,6 @@ class Espresso(ServiceBase):
                                   parent=res_class)
 
                 res_list.append(res)
-
 
         # Add results if any
         self.recurse_add_res(file_res, imp_res_list, new_files)
