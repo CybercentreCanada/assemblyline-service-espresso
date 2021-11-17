@@ -2,9 +2,8 @@ import hashlib
 import logging
 import os
 import zipfile
-import time
-from subprocess import Popen, PIPE, call
-import re
+from subprocess import Popen, PIPE
+from concurrent.futures import ThreadPoolExecutor
 
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
@@ -12,7 +11,7 @@ from assemblyline.common.str_utils import translate_str, safe_str
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT, Heuristic
 from assemblyline_v4_service.common.utils import set_death_signal
-from assemblyline_v4_service.common.keytool_parse import Certificate, certificate_chain_from_printcert, keytool_printcert
+from assemblyline_v4_service.common.keytool_parse import certificate_chain_from_printcert, keytool_printcert
 
 
 G_LAUNCHABLE_EXTENSIONS = [
@@ -359,6 +358,43 @@ class Espresso(ServiceBase):
                 self.manifest_tags = []
                 self.signature_block_certs = []
 
+                def analyze_file(root, cf, file_res, imp_res_list, supplementary_files, decompiled_dir, extract_dir):
+                    cur_file_path = os.path.join(root.decode('utf-8'), cf.decode('utf-8'))
+                    with open(cur_file_path, "rb") as cur_file:
+                        start_bytes = cur_file.read(24)
+
+                        ##############################
+                        # Executables in JAR
+                        ##############################
+                        cur_ext = os.path.splitext(cf)[1][1:].upper()
+                        if start_bytes[:2] == b"MZ":
+                            mz_res = dict(
+                                title_text=f"Embedded executable file found: {cf} "
+                                "There may be a malicious intent.",
+                                heur_id=1,
+                                tags=[('file.behaviour', "Embedded PE")],
+                                score_condition=APPLET_MZ,
+                            )
+                            imp_res_list.append(mz_res)
+
+                        ##############################
+                        # Launchable in JAR
+                        ##############################
+                        elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
+                            l_res = dict(
+                                title_text=f"Launch-able file type found: {cf}"
+                                "There may be a malicious intent.",
+                                heur_id=2,
+                                tags=[('file.behaviour', "Launch-able file in JAR")],
+                                score_condition=APPLET_MZ,
+                            )
+                            imp_res_list.append(l_res)
+
+                        if cur_file_path.upper().endswith('.CLASS'):
+                            self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
+                                                    start_bytes, imp_res_list, supplementary_files,
+                                                    decompiled_dir, extract_dir)
+
                 for root, _, files in os.walk(extract_dir.encode('utf-8')):
                     logging.info(f"Extracted: {root} - {files}")
 
@@ -367,42 +403,10 @@ class Espresso(ServiceBase):
                         self.analyse_meta_information(file_res, root, supplementary_files, extract_dir)
                         continue
 
-                    for cf in files:
-                        cur_file_path = os.path.join(root.decode('utf-8'), cf.decode('utf-8'))
-                        with open(cur_file_path, "rb") as cur_file:
-                            start_bytes = cur_file.read(24)
-
-                            ##############################
-                            # Executables in JAR
-                            ##############################
-                            cur_ext = os.path.splitext(cf)[1][1:].upper()
-                            if start_bytes[:2] == b"MZ":
-                                mz_res = dict(
-                                    title_text=f"Embedded executable file found: {cf} "
-                                               "There may be a malicious intent.",
-                                    heur_id=1,
-                                    tags=[('file.behaviour', "Embedded PE")],
-                                    score_condition=APPLET_MZ,
-                                )
-                                imp_res_list.append(mz_res)
-
-                            ##############################
-                            # Launchable in JAR
-                            ##############################
-                            elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                                l_res = dict(
-                                    title_text=f"Launch-able file type found: {cf}"
-                                               "There may be a malicious intent.",
-                                    heur_id=2,
-                                    tags=[('file.behaviour', "Launch-able file in JAR")],
-                                    score_condition=APPLET_MZ,
-                                )
-                                imp_res_list.append(l_res)
-
-                            if cur_file_path.upper().endswith('.CLASS'):
-                                self.analyse_class_file(file_res, cf, cur_file, cur_file_path,
-                                                        start_bytes, imp_res_list, supplementary_files,
-                                                        decompiled_dir, extract_dir)
+                    with ThreadPoolExecutor() as executor:
+                        for cf in files:
+                            executor.submit(analyze_file, root, cf, file_res, imp_res_list,
+                                            supplementary_files, decompiled_dir, extract_dir)
 
                 res = ResultSection("Analysis of the JAR file")
 
