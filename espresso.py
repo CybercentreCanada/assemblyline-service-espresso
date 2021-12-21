@@ -233,11 +233,7 @@ class Espresso(ServiceBase):
         """
         certs = certificate_chain_from_printcert(certs)
 
-        valid_from_epoch = 0
-        valid_to_epoch = 0
-
         for cert in certs:
-
             res_cert = ResultSection("Certificate Analysis", body=safe_str(cert.raw),
                                      body_format=BODY_FORMAT.MEMORY_DUMP)
 
@@ -270,7 +266,7 @@ class Espresso(ServiceBase):
 
             if cert.country:
                 try:
-                    int(country)
+                    int(cert.country)
                     is_int_country = True
                 except Exception:
                     is_int_country = False
