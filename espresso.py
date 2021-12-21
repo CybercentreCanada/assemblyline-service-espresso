@@ -215,7 +215,7 @@ class Espresso(ServiceBase):
                 body=hexdump(first_256),
                 body_format=BODY_FORMAT.MEMORY_DUMP,
                 heur_id=3,
-                tags=[('file.behaviour', "Suspicious Java Class")],
+                tags=[('file.behavior', "Suspicious Java Class")],
                 files=[cur_file_path],
             )
             imp_res_list.append(ob_res)
@@ -372,7 +372,7 @@ class Espresso(ServiceBase):
                                 title_text=f"Embedded executable file found: {cf} "
                                 "There may be a malicious intent.",
                                 heur_id=1,
-                                tags=[('file.behaviour', "Embedded PE")],
+                                tags=[('file.behavior', "Embedded PE")],
                                 score_condition=APPLET_MZ,
                             )
                             imp_res_list.append(mz_res)
@@ -385,7 +385,7 @@ class Espresso(ServiceBase):
                                 title_text=f"Launch-able file type found: {cf}"
                                 "There may be a malicious intent.",
                                 heur_id=2,
-                                tags=[('file.behaviour', "Launch-able file in JAR")],
+                                tags=[('file.behavior', "Launch-able file in JAR")],
                                 score_condition=APPLET_MZ,
                             )
                             imp_res_list.append(l_res)
