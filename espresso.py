@@ -493,7 +493,7 @@ class Espresso(ServiceBase):
                 # Add body
                 body = res_dic.get('body', None)
                 if body:
-                    res.body = body
+                    res.set_body(body)
 
                 # File for resubmit
                 files = res_dic.get('files', [])
