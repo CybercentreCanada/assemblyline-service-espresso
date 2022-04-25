@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import translate_str, safe_str
+from assemblyline_v4_service.common import api
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT, Heuristic
 from assemblyline_v4_service.common.utils import set_death_signal
@@ -465,10 +466,10 @@ class Espresso(ServiceBase):
         # Submit embedded files
         if len(new_files) > 0:
             new_files = sorted(list(set(new_files)))
-            txt = f"Extracted from {'JAR'} file {filename}"
+            txt = f"Extracted from 'JAR' file {filename}"
             for embed in new_files:
                 request.add_extracted(embed, embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
-                                      txt)
+                                      txt, safelist_interface=self.api_interface)
 
         if len(supplementary_files) > 0:
             supplementary_files = sorted(list(set(supplementary_files)))
