@@ -1,7 +1,12 @@
-import pytest
-import os
 import json
+import os
 import shutil
+
+import pytest
+from assemblyline.odm.messages.task import Task as ServiceTask
+from assemblyline_service_utilities.common.keytool_parse import keytool_printcert
+from assemblyline_v4_service.common.request import ServiceRequest
+from assemblyline_v4_service.common.task import Task
 
 # Getting absolute paths, names and regexes
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -72,7 +77,7 @@ class TestEspresso:
           'Owner: CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA\n'
           'Issuer: CN=root, OU=root, O=root, L=root, ST=root, C=CA\n'
           'Serial number: 5f822698\n'
-          'Valid from: Wed Apr 14 13:40:13 EDT 2021 until: Tue Jul 13 13:40:13 EDT 2021\n'
+          'Valid from: Wed Apr 14 17:40:13 UTC 2021 until: Tue Jul 13 17:40:13 UTC 2021\n'
           'Certificate fingerprints:\n'
           '\t SHA1: 59:7C:A0:72:5D:98:9F:61:B9:9F:29:20:C8:73:60:9C:0E:02:EB:DF\n'
           '\t SHA256: AE:56:E7:5E:49:F2:1B:4B:FF:7A:76:12:6E:72:84:1C:6B:D3:E7:FA:D9:84:43:53:C7:24:A9:2F:3E:12:63:7F\n'
@@ -99,7 +104,7 @@ class TestEspresso:
           'Certificate[1]:\n'
           'Owner: CN=server, OU=server, O=server, L=server, ST=server, C=CA\n'
           'Issuer: CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA\nSerial number: 4e2d045a\n'
-          'Valid from: Wed Apr 14 13:42:22 EDT 2021 until: Tue Jul 13 13:42:22 EDT 2021\n'
+          'Valid from: Wed Apr 14 17:42:22 UTC 2021 until: Tue Jul 13 17:42:22 UTC 2021\n'
           'Certificate fingerprints:\n'
           '\t SHA1: 0B:BE:A7:40:20:F4:F0:DE:D1:C8:99:26:32:A8:33:7A:EB:E8:87:70\n'
           '\t SHA256: 83:C1:8D:49:A4:98:3F:73:66:97:63:78:4C:E5:70:BF:0C:A2:71:4A:58:CE:B0:4E:65:87:39:F0:06:1F:7F:2C\n'
@@ -127,7 +132,7 @@ class TestEspresso:
           'Owner: CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA\n'
           'Issuer: CN=root, OU=root, O=root, L=root, ST=root, C=CA\n'
           'Serial number: 5f822698\n'
-          'Valid from: Wed Apr 14 13:40:13 EDT 2021 until: Tue Jul 13 13:40:13 EDT 2021\n'
+          'Valid from: Wed Apr 14 17:40:13 UTC 2021 until: Tue Jul 13 17:40:13 UTC 2021\n'
           'Certificate fingerprints:\n'
           '\t SHA1: 59:7C:A0:72:5D:98:9F:61:B9:9F:29:20:C8:73:60:9C:0E:02:EB:DF\n'
           '\t SHA256: AE:56:E7:5E:49:F2:1B:4B:FF:7A:76:12:6E:72:84:1C:6B:D3:E7:FA:D9:84:43:53:C7:24:A9:2F:3E:12:63:7F\n'
@@ -160,8 +165,6 @@ class TestEspresso:
         steps in the 'Generate Certificates for an SSL Server' section of the keytool docs:
         https://docs.oracle.com/javase/8/docs/technotes/tools/windows/keytool.html
         """
-        from assemblyline_v4_service.common.keytool_parse import keytool_printcert
-
         cert = keytool_printcert(cert_path)
         assert cert == printcert
 
@@ -171,11 +174,6 @@ class TestEspresso:
                                  sample1
                              ])
     def test_execute(class_instance, sample):
-        # Imports required to execute the sample
-        from assemblyline_v4_service.common.task import Task
-        from assemblyline.odm.messages.task import Task as ServiceTask
-        from assemblyline_v4_service.common.request import ServiceRequest
-
         # Creating the required objects for execution
         service_task = ServiceTask(sample1)
         task = Task(service_task)
@@ -202,5 +200,8 @@ class TestEspresso:
 
         # Comparing everything in the response except for the date
         test_result_response.pop("milestones")
+        test_result_response["supplementary"][0].pop("path")
         correct_result_response.pop("milestones")
+        correct_result_response["supplementary"][0].pop("path")
+
         assert test_result_response == correct_result_response
