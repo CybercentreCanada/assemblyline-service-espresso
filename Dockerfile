@@ -17,6 +17,10 @@ RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/r
 # Switch to assemblyline user
 USER assemblyline
 
+# Install python dependencies
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir --user --requirement requirements.txt && rm -rf ~/.cache/pip
+
 # Copy Espresso service code
 WORKDIR /opt/al_service
 COPY . .
