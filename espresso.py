@@ -495,7 +495,8 @@ class Espresso(ServiceBase):
                 if res_class.subsections:
                     res.add_subsection(res_class)
 
-                res_list.append(res)
+                if res.subsections:
+                    res_list.append(res)
 
         # Add results if any
         self.recurse_add_res(file_res, imp_res_list, new_files)
