@@ -8,10 +8,10 @@ from subprocess import PIPE, Popen
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import safe_str, translate_str
+from assemblyline.odm.models.result import BODY_FORMAT
 from assemblyline_service_utilities.common.keytool_parse import certificate_chain_from_printcert, keytool_printcert
-from assemblyline_v4_service.common import api
 from assemblyline_v4_service.common.base import ServiceBase
-from assemblyline_v4_service.common.result import BODY_FORMAT, Heuristic, Result, ResultSection
+from assemblyline_v4_service.common.result import Heuristic, Result, ResultSection
 from assemblyline_v4_service.common.utils import set_death_signal
 
 G_LAUNCHABLE_EXTENSIONS = [
