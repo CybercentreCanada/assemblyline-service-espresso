@@ -306,12 +306,12 @@ class Espresso(ServiceBase):
             cur_file = os.path.join(meta_dir, filename)
             if cur_file.upper().endswith(b"MANIFEST.MF"):  # handle jar manifest
                 with open(cur_file, "rb") as manifest_file:
-                     # Parse manifest contents for easier data retrieval
-                     mf.parse(manifest_file.read())
+                    # Parse manifest contents for easier data retrieval
+                    mf.parse(manifest_file.read())
 
                 # Extract information about the main class
                 if mf.get("Main-Class"):
-                    main = tuple(mf["Main-Class"].rsplit(b".", 1))
+                    main = tuple(mf["Main-Class"].rsplit(".", 1))
                     if len(main) == 2:
                         self.manifest_tags.append(("file.jar.main_class", main[1]))
                         self.manifest_tags.append(("file.jar.main_package", main[0]))
