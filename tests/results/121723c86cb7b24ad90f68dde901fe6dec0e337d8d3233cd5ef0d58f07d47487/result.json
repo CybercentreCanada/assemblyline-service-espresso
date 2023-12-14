@@ -1,0 +1,307 @@
+{
+  "extra": {
+    "drop_file": false,
+    "score": 11,
+    "sections": [
+      {
+        "auto_collapse": false,
+        "body": "All suspicious class files were saved as supplementary files.",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Analysis of the JAR file",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Meta Information]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "file": {
+            "jar": {
+              "main_class": [
+                "main"
+              ]
+            }
+          }
+        },
+        "title_text": "Manifest File Information Extract",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "Owner: CN=root, OU=root, O=root, L=root, ST=root, C=CA\nIssuer: CN=root, OU=root, O=root, L=root, ST=root, C=CA\nSerial number: 5f0ac1d5\nValid from: Wed Apr 14 17:37:49 UTC 2021 until: Tue Jul 13 17:37:49 UTC 2021\nCertificate fingerprints:\n\t SHA1: 0D:A1:EA:85:EB:B1:7A:78:16:A3:50:6C:2C:15:12:39:4E:25:32:09\n\t SHA256: E0:FB:37:DF:97:42:75:72:F4:69:EA:C5:97:00:33:9B:2D:C3:4A:9A:1D:31:A9:B4:AD:87:09:91:5D:81:1A:B7\nSignature algorithm name: SHA256withDSA\nSubject Public Key Algorithm: 2048-bit DSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.19 Criticality=true\nBasicConstraints:[\n  CA:true\n  PathLen:2147483647\n]\n\n#2: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: 9D 76 79 BA 97 17 06 07   75 A6 5C E1 E6 98 09 F0  .vy.....u.\\.....\n0010: D8 42 F6 C1                                        .B..\n]\n]",
+        "body_config": {},
+        "body_format": "MEMORY_DUMP",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "cert": {
+            "issuer": [
+              "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+            ],
+            "owner": [
+              "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+            ],
+            "valid": {
+              "end": [
+                "Tue Jul 13 17:37:49 UTC 2021"
+              ],
+              "start": [
+                "Wed Apr 14 17:37:49 UTC 2021"
+              ]
+            }
+          }
+        },
+        "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 3,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 11,
+          "score": 1,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Certificate is self-signed",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "Owner: CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA\nIssuer: CN=root, OU=root, O=root, L=root, ST=root, C=CA\nSerial number: 5f822698\nValid from: Wed Apr 14 17:40:13 UTC 2021 until: Tue Jul 13 17:40:13 UTC 2021\nCertificate fingerprints:\n\t SHA1: 59:7C:A0:72:5D:98:9F:61:B9:9F:29:20:C8:73:60:9C:0E:02:EB:DF\n\t SHA256: AE:56:E7:5E:49:F2:1B:4B:FF:7A:76:12:6E:72:84:1C:6B:D3:E7:FA:D9:84:43:53:C7:24:A9:2F:3E:12:63:7F\nSignature algorithm name: SHA256withDSA\nSubject Public Key Algorithm: 2048-bit DSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.35 Criticality=false\nAuthorityKeyIdentifier [\nKeyIdentifier [\n0000: 9D 76 79 BA 97 17 06 07   75 A6 5C E1 E6 98 09 F0  .vy.....u.\\.....\n0010: D8 42 F6 C1                                        .B..\n]\n]\n\n#2: ObjectId: 2.5.29.19 Criticality=false\nBasicConstraints:[\n  CA:true\n  PathLen:0\n]\n\n#3: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: C2 BF E5 BF 85 2B ED 82   D2 F1 49 89 06 5B 5E 90  .....+....I..[^.\n0010: 64 FC C3 16                                        d...\n]\n]",
+        "body_config": {},
+        "body_format": "MEMORY_DUMP",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "cert": {
+            "issuer": [
+              "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+            ],
+            "owner": [
+              "CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA"
+            ],
+            "valid": {
+              "end": [
+                "Tue Jul 13 17:40:13 UTC 2021"
+              ],
+              "start": [
+                "Wed Apr 14 17:40:13 UTC 2021"
+              ]
+            }
+          }
+        },
+        "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "Owner: CN=server, OU=server, O=server, L=server, ST=server, C=CA\nIssuer: CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA\nSerial number: 4e2d045a\nValid from: Wed Apr 14 17:42:22 UTC 2021 until: Tue Jul 13 17:42:22 UTC 2021\nCertificate fingerprints:\n\t SHA1: 0B:BE:A7:40:20:F4:F0:DE:D1:C8:99:26:32:A8:33:7A:EB:E8:87:70\n\t SHA256: 83:C1:8D:49:A4:98:3F:73:66:97:63:78:4C:E5:70:BF:0C:A2:71:4A:58:CE:B0:4E:65:87:39:F0:06:1F:7F:2C\nSignature algorithm name: SHA256withDSA\nSubject Public Key Algorithm: 2048-bit DSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.35 Criticality=false\nAuthorityKeyIdentifier [\nKeyIdentifier [\n0000: C2 BF E5 BF 85 2B ED 82   D2 F1 49 89 06 5B 5E 90  .....+....I..[^.\n0010: 64 FC C3 16                                        d...\n]\n]\n\n#2: ObjectId: 2.5.29.15 Criticality=true\nKeyUsage [\n  DigitalSignature\n  Key_Encipherment\n]\n\n#3: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: 9B 06 D8 13 2E 6F 2F 62   85 66 42 A9 AC 86 2E A8  .....o/b.fB.....\n0010: 25 89 AB FC                                        %...\n]\n]",
+        "body_config": {},
+        "body_format": "MEMORY_DUMP",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "cert": {
+            "issuer": [
+              "CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA"
+            ],
+            "owner": [
+              "CN=server, OU=server, O=server, L=server, ST=server, C=CA"
+            ],
+            "valid": {
+              "end": [
+                "Tue Jul 13 17:42:22 UTC 2021"
+              ],
+              "start": [
+                "Wed Apr 14 17:42:22 UTC 2021"
+              ]
+            }
+          }
+        },
+        "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Suspicious classes]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/net/URL: 2",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 9,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "URL Found",
+        "zeroize_on_tag_safe": false
+      }
+    ]
+  },
+  "files": {
+    "extracted": [],
+    "supplementary": [
+      {
+        "name": "helper.java",
+        "sha256": "21bf1abe2ad7612d67347613bd238850a488acbaef753134577623e2dfe61406"
+      },
+      {
+        "name": "main.java",
+        "sha256": "69b8b383d59d55c0e6bbfdc4d0ed793671089da3390ade99dd06853b0cb1de12"
+      },
+      {
+        "name": "SERVER.DSA",
+        "sha256": "8f4552e144d009d46dfefcd6498efb9e40134a21543dd00e39e5b6d8001b33c0"
+      }
+    ]
+  },
+  "results": {
+    "heuristics": [
+      {
+        "attack_ids": [],
+        "heur_id": 9,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 11,
+        "signatures": []
+      }
+    ],
+    "tags": {
+      "cert.issuer": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+        }
+      ],
+      "cert.owner": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=ca, OU=ca, O=ca, L=ca, ST=ca, C=CA"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=root, OU=root, O=root, L=root, ST=root, C=CA"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=server, OU=server, O=server, L=server, ST=server, C=CA"
+        }
+      ],
+      "cert.valid.end": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Tue Jul 13 17:37:49 UTC 2021"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Tue Jul 13 17:40:13 UTC 2021"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Tue Jul 13 17:42:22 UTC 2021"
+        }
+      ],
+      "cert.valid.start": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Wed Apr 14 17:37:49 UTC 2021"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Wed Apr 14 17:40:13 UTC 2021"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Wed Apr 14 17:42:22 UTC 2021"
+        }
+      ],
+      "file.jar.main_class": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "main"
+        }
+      ]
+    },
+    "temp_submission_data": {}
+  }
+}
