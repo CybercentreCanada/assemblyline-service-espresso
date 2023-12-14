@@ -2,6 +2,7 @@ ARG branch=latest
 FROM cccs/assemblyline-v4-service-base:$branch
 
 ENV SERVICE_PATH espresso.Espresso
+ENV CFR_VERSION=0.152
 
 USER root
 
@@ -12,7 +13,7 @@ RUN apt-get update && apt-get install -y wget default-jre-headless java-common &
 
 RUN mkdir -p /opt/al/support/espresso
 
-RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/0.151/cfr-0.151.jar
+RUN wget -O /opt/al/support/espresso/cfr.jar https://github.com/leibnitz27/cfr/releases/download/$CFR_VERSION/cfr-$CFR_VERSION.jar
 
 # Switch to assemblyline user
 USER assemblyline

@@ -9,10 +9,10 @@ from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
 from assemblyline.common.str_utils import safe_str, translate_str
 from assemblyline_service_utilities.common.keytool_parse import certificate_chain_from_printcert, keytool_printcert
-from assemblyline_v4_service.common import api
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import BODY_FORMAT, Heuristic, Result, ResultSection
 from assemblyline_v4_service.common.utils import set_death_signal
+from javatools.manifest import Manifest
 
 G_LAUNCHABLE_EXTENSIONS = [
     "BAT",  # DOS/Windows batch file
@@ -49,7 +49,7 @@ class Espresso(ServiceBase):
 
     @staticmethod
     def get_tool_version(**_):
-        return "CFR: 0.151"
+        return f"CFR: {os.environ.get('CFR_VERSION')}"
 
     def start(self):
         if not os.path.isfile(self.cfr):
@@ -290,41 +290,43 @@ class Espresso(ServiceBase):
                 desc = f"JAR Signature Block: {name}"
                 supplementary_files.append((cur_file.decode("utf-8"), name.decode("utf-8"), desc))
 
-    def analyse_meta_information(self, file_res, meta_dir, supplementary_files, extract_dir):
+    def analyse_meta_information(self, meta_dir, supplementary_files):
         """
         this function pulls the meta information out of the META-INF folder.
         For now it analyzes the manifest file and the certificate(s)
 
-        :param file_res: the service response
         :param meta_dir: the path of the META-INF folder
         :param supplementary_files: the service's supplementary files
         :param extract_dir: where the jar archive was extracted to
         :return:
         """
         # iterate over all files in META-INF folder
+        mf = Manifest()
         for filename in os.listdir(meta_dir):
             cur_file = os.path.join(meta_dir, filename)
             if cur_file.upper().endswith(b"MANIFEST.MF"):  # handle jar manifest
                 with open(cur_file, "rb") as manifest_file:
-                    lines = []
-                    for line in manifest_file:
-                        if line.startswith((b" ", b"\t")):
-                            lines[-1] += line.strip()
-                        else:
-                            lines.append(line.rstrip())
+                     # Parse manifest contents for easier data retrieval
+                     mf.parse(manifest_file.read())
 
-                    # pull field/value pairs out of manifest file
-                    fields = [tuple(line.split(b": ")) for line in lines if b":" in line]
-                    for f in fields:
-                        if len(f) != 2:
-                            continue
-                        if f[0].upper() == b"MAIN-CLASS":  # for now only main-class info extracted
-                            main = tuple(f[1].rsplit(b".", 1))
-                            if len(main) == 2:
-                                self.manifest_tags.append(("file.jar.main_class", main[1]))
-                                self.manifest_tags.append(("file.jar.main_package", main[0]))
-                            elif len(main) == 1:
-                                self.manifest_tags.append(("file.jar.main_class", main[0]))
+                # Extract information about the main class
+                if mf.get("Main-Class"):
+                    main = tuple(mf["Main-Class"].rsplit(b".", 1))
+                    if len(main) == 2:
+                        self.manifest_tags.append(("file.jar.main_class", main[1]))
+                        self.manifest_tags.append(("file.jar.main_package", main[0]))
+                    elif len(main) == 1:
+                        self.manifest_tags.append(("file.jar.main_class", main[0]))
+
+                # Extract information about the packages imported
+                for package_str in mf.get("Import-Package", "").split(","):
+                    # Assume the package doesn't have a version associated
+                    data = package_str
+                    if ";" in package_str:
+                        # There's a version associated to package, overwrite value before tagging
+                        data = package_str.replace(";version", "=").replace('"', "")
+
+                    self.manifest_tags.append(("file.jar.imported_package", data))
 
             else:
                 stdout = keytool_printcert(cur_file)
@@ -414,7 +416,7 @@ class Espresso(ServiceBase):
 
                     # if the META-INF folder is encountered
                     if root.upper().endswith(b"META-INF"):  # only top level meta
-                        self.analyse_meta_information(file_res, root, supplementary_files, extract_dir)
+                        self.analyse_meta_information(root, supplementary_files)
                         continue
 
                     with ThreadPoolExecutor() as executor:
