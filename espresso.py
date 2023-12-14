@@ -297,7 +297,6 @@ class Espresso(ServiceBase):
 
         :param meta_dir: the path of the META-INF folder
         :param supplementary_files: the service's supplementary files
-        :param extract_dir: where the jar archive was extracted to
         :return:
         """
         # iterate over all files in META-INF folder
