@@ -1,0 +1,1383 @@
+{
+  "extra": {
+    "drop_file": false,
+    "score": 80,
+    "sections": [
+      {
+        "auto_collapse": false,
+        "body": "All suspicious class files were saved as supplementary files.",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Analysis of the JAR file",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Meta Information]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "file": {
+            "jar": {
+              "imported_package": [
+                "com.opensymphony.xwork2==2.5",
+                "com.opensymphony.xwork2.config==2.5",
+                "com.opensymphony.xwork2.config.entities==2.5",
+                "com.opensymphony.xwork2.config.impl==2.5",
+                "com.opensymphony.xwork2.config.providers==2.5",
+                "com.opensymphony.xwork2.conversion==2.5",
+                "com.opensymphony.xwork2.conversion.annotations==2.5",
+                "com.opensymphony.xwork2.conversion.impl==2.5",
+                "com.opensymphony.xwork2.conversion.metadata==2.5",
+                "com.opensymphony.xwork2.factory==2.5",
+                "com.opensymphony.xwork2.inject==2.5",
+                "com.opensymphony.xwork2.inject.util==2.5",
+                "com.opensymphony.xwork2.interceptor==2.5",
+                "com.opensymphony.xwork2.interceptor.annotations==2.5",
+                "com.opensymphony.xwork2.mock==2.5",
+                "com.opensymphony.xwork2.ognl==2.5",
+                "com.opensymphony.xwork2.ognl.accessor==2.5",
+                "com.opensymphony.xwork2.result==2.5",
+                "com.opensymphony.xwork2.security==2.5",
+                "com.opensymphony.xwork2.spring==2.5",
+                "com.opensymphony.xwork2.spring.interceptor==2.5",
+                "com.opensymphony.xwork2.test==2.5",
+                "com.opensymphony.xwork2.util==2.5",
+                "com.opensymphony.xwork2.util.classloader==2.5",
+                "com.opensymphony.xwork2.util.finder==2.5",
+                "com.opensymphony.xwork2.util.fs==2.5",
+                "com.opensymphony.xwork2.util.location==2.5",
+                "com.opensymphony.xwork2.util.logging==2.5",
+                "com.opensymphony.xwork2.util.logging.commons==2.5",
+                "com.opensymphony.xwork2.util.logging.jdk==2.5",
+                "com.opensymphony.xwork2.util.logging.log4j2==2.5",
+                "com.opensymphony.xwork2.util.logging.slf4j==2.5",
+                "com.opensymphony.xwork2.util.profiling==2.5",
+                "com.opensymphony.xwork2.util.reflection==2.5",
+                "com.opensymphony.xwork2.validator==2.5",
+                "com.opensymphony.xwork2.validator.annotations==2.5",
+                "com.opensymphony.xwork2.validator.validators==2.5",
+                "freemarker.cache==2.3",
+                "freemarker.core==2.3",
+                "freemarker.ext.beans==2.3",
+                "freemarker.ext.jsp==2.3",
+                "freemarker.ext.servlet==2.3",
+                "freemarker.ext.util==2.3",
+                "freemarker.template==2.3",
+                "freemarker.template.utility==2.3",
+                "javax.servlet",
+                "javax.servlet.http",
+                "javax.servlet.jsp",
+                "javax.servlet.jsp.tagext",
+                "javax.xml.parsers",
+                "javax.xml.transform",
+                "javax.xml.transform.dom",
+                "javax.xml.transform.sax",
+                "javax.xml.transform.stream",
+                "junit.framework",
+                "ognl",
+                "org.apache.commons.fileupload==1.4",
+                "org.apache.commons.fileupload.disk==1.4",
+                "org.apache.commons.fileupload.servlet==1.4",
+                "org.apache.commons.fileupload.util==1.4",
+                "org.apache.commons.lang3==3.8",
+                "org.apache.commons.lang3.math==3.8",
+                "org.apache.commons.lang3.reflect==3.8",
+                "org.apache.commons.lang3.text==3.8",
+                "org.apache.commons.lang3.time==3.8",
+                "org.apache.commons.logging==1.2",
+                "org.apache.logging.log4j==2.12",
+                "org.apache.logging.log4j.message==2.12",
+                "org.apache.struts2==2.5",
+                "org.apache.struts2.components==2.5",
+                "org.apache.struts2.components.template==2.5",
+                "org.apache.struts2.config==2.5",
+                "org.apache.struts2.conversion==2.5",
+                "org.apache.struts2.dispatcher==2.5",
+                "org.apache.struts2.dispatcher.filter==2.5",
+                "org.apache.struts2.dispatcher.listener==2.5",
+                "org.apache.struts2.dispatcher.mapper==2.5",
+                "org.apache.struts2.dispatcher.multipart==2.5",
+                "org.apache.struts2.dispatcher.servlet==2.5",
+                "org.apache.struts2.factory==2.5",
+                "org.apache.struts2.interceptor==2.5",
+                "org.apache.struts2.interceptor.debugging==2.5",
+                "org.apache.struts2.interceptor.servlet==2.5",
+                "org.apache.struts2.interceptor.validation==2.5",
+                "org.apache.struts2.result==2.5",
+                "org.apache.struts2.static==2.5",
+                "org.apache.struts2.util==2.5",
+                "org.apache.struts2.util.fs==2.5",
+                "org.apache.struts2.util.tomcat.buf==2.5",
+                "org.apache.struts2.views==2.5",
+                "org.apache.struts2.views.annotations==2.5",
+                "org.apache.struts2.views.freemarker==2.5",
+                "org.apache.struts2.views.freemarker.tags==2.5",
+                "org.apache.struts2.views.jsp==2.5",
+                "org.apache.struts2.views.jsp.iterator==2.5",
+                "org.apache.struts2.views.jsp.ui==2.5",
+                "org.apache.struts2.views.jsp.ui.table==2.5",
+                "org.apache.struts2.views.util==2.5",
+                "org.apache.struts2.views.velocity==2.5",
+                "org.apache.struts2.views.velocity.components==2.5",
+                "org.apache.struts2.views.xslt==2.5",
+                "org.apache.velocity",
+                "org.apache.velocity.app",
+                "org.apache.velocity.app.event",
+                "org.apache.velocity.context",
+                "org.apache.velocity.exception",
+                "org.apache.velocity.runtime.directive",
+                "org.apache.velocity.runtime.parser.node",
+                "org.apache.velocity.runtime.resource",
+                "org.apache.velocity.runtime.resource.loader",
+                "org.apache.velocity.tools.view",
+                "org.apache.velocity.tools.view.context",
+                "org.apache.velocity.tools.view.servlet",
+                "org.apache.velocity.util.introspection",
+                "org.junit",
+                "org.slf4j==1.7",
+                "org.springframework.beans",
+                "org.springframework.beans.factory",
+                "org.springframework.beans.factory.config",
+                "org.springframework.beans.factory.support",
+                "org.springframework.context",
+                "org.springframework.context.support",
+                "org.springframework.web.context",
+                "org.testng.annotations==5.14",
+                "org.w3c.dom",
+                "org.xml.sax",
+                "org.xml.sax.helpers",
+                "template.archive.ajax==2.5",
+                "template.archive.simple==2.5",
+                "template.archive.xhtml==2.5",
+                "template.css_xhtml==2.5",
+                "template.simple==2.5",
+                "template.xhtml==2.5"
+              ]
+            }
+          }
+        },
+        "title_text": "Manifest File Information Extract",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Suspicious classes]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/lang/Runtime: 23",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 10,
+          "score": 50,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Runtime Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/lang/ClassLoader: 43",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 7,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Classloader Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/security/*: 25",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 8,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Security Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/net/URL: 42",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 9,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "URL Found",
+        "zeroize_on_tag_safe": false
+      }
+    ]
+  },
+  "files": {
+    "extracted": [],
+    "supplementary": [
+      {
+        "name": "com/opensymphony/xwork2/util/StrutsLocalizedTextProvider.java",
+        "sha256": "02525ad24d34a0ac6ce6a4927fe701184be192e99b1b5e4ab83d8a7119f4511a"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/DomHelper$StartHandler.java",
+        "sha256": "035ca3ffe9ea95d0620c79a6980945d5f27d07f876a9f38dcdce8f463ca159d6"
+      },
+      {
+        "name": "org/apache/struts2/config/DefaultBeanSelectionProvider.java",
+        "sha256": "0533109c44389d4ec057751ab891977ca2d5e0d90a652c6c6817eba9ba9477b4"
+      },
+      {
+        "name": "org/apache/struts2/components/Component.java",
+        "sha256": "05b55192ee17998e80e3ade8ddcbcbf2efa6145ce8cdddadbef14d6ecfca94b3"
+      },
+      {
+        "name": "org/apache/struts2/config/PropertiesSettings.java",
+        "sha256": "05b9404280f9368bc79add2465dc37fef9873a7ed2475e06903be90769356e09"
+      },
+      {
+        "name": "org/apache/struts2/views/xslt/XSLTResult.java",
+        "sha256": "07edab759aa0265f5f4bfeacad678311221e47d9e2aefa7ddc7ed222bcd7698b"
+      },
+      {
+        "name": "org/apache/struts2/components/template/BaseTemplateEngine.java",
+        "sha256": "08564666cffd925ff1dd2ca2954f8995ec522b9fca426b524358f1edc55d5e7d"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ClassLoaderInterfaceDelegate.java",
+        "sha256": "0b732c8cd6dcc359efa8cbea64dbef1713bc63baa851596843c56d48cef955b8"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/Scope$6$1.java",
+        "sha256": "0c0a763b89dedfa767671da3aeac1f1c62be053751b416163dfbd4dc09bf4342"
+      },
+      {
+        "name": "org/apache/struts2/dispatcher/DefaultStaticContentLoader.java",
+        "sha256": "0dbe4a1b42836a81348fc203c63da3264835dd6100be772fa48f4dd237005f0d"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ClassLoaderUtil.java",
+        "sha256": "0e49bef2e9a5ec59243d3697b9d9c2c91b918f25f675fa98e28e2eddfba78363"
+      },
+      {
+        "name": "org/apache/struts2/views/freemarker/FreemarkerManager.java",
+        "sha256": "0fa0021bfa09846067d6e13390a4458f58b2d280e71f6d3658f6ad5795d12579"
+      },
+      {
+        "name": "org/apache/struts2/result/ServletRedirectResult.java",
+        "sha256": "1033e88afbc44f13caa54e9f733af1390238833f0ab88f03678485e789251ebf"
+      },
+      {
+        "name": "org/apache/struts2/views/util/DefaultUrlHelper.java",
+        "sha256": "10ca55ec14d226230877d710e056ca7749eb300f129a287f8559933500eabbd5"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ContainerImpl$FieldInjector.java",
+        "sha256": "1623076816e43c6de5c55bb179350a1efaef970f378e5a47f5c1da4bf1998b77"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ContainerImpl$MethodInjector.java",
+        "sha256": "166d85a918db214e54987f91cd5d3cf646dab409e3a3bd705747c0cb3f20c889"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ClassLoaderInterface.java",
+        "sha256": "178aedaa67e68f8e125e11259bf162b0b13650e39f6bb01e2f85a2cc75d0b7e2"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/FileRevision.java",
+        "sha256": "191a5c133f73d454734788c37aab7569b856777ec5bf5d08c001907df867232c"
+      },
+      {
+        "name": "org/apache/struts2/views/velocity/StrutsResourceLoader.java",
+        "sha256": "1b4c9aa668d7ff964bd1e8ab6040dd8b69c46e7b78a602c0d8a1b3bf2b8ff079"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/XWorkTestCaseHelper.java",
+        "sha256": "1bc11cef878e880a49a555fd8380fed1a2af9360096df07b6bd41ca858c80748"
+      },
+      {
+        "name": "org/apache/struts2/interceptor/PrincipalProxy.java",
+        "sha256": "1e106c38138bd6e40f07d20ba0b09c1f0811aba10ab7593af2010acfbbb4f7c8"
+      },
+      {
+        "name": "org/apache/struts2/config/AbstractBeanSelectionProvider.java",
+        "sha256": "2132a5827a9773e01175697276f914d332c468d40dadb0485a440ade02fe2516"
+      },
+      {
+        "name": "org/apache/struts2/util/tomcat/buf/UDecoder.java",
+        "sha256": "24ce647510be3fc73a9dc526f2a9a7875a6c1f8704a711d6695874a1ba6e1b08"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ContainerImpl$ConstructorInjector.java",
+        "sha256": "28a2ccbeb57410370a3b046b64168b5b27d8dfc1d5d069a9a32f017a512b1391"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ResourceFinder.java",
+        "sha256": "2b7ae560b4f39d555caa7d99a3f2442c25df6b3a505253ec095532d5a4850e37"
+      },
+      {
+        "name": "com/opensymphony/xwork2/ognl/accessor/CompoundRootAccessor.java",
+        "sha256": "2baa1b9384dc7ed95914b8c28527aa8e5e08cb7a48601013866d371be4a89301"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ClassPathFinder.java",
+        "sha256": "308a4d6a31ec92e1cb2f52e90ce619741333e5fdcae220d10b481fb957e8aa3f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/classloader/ResourceStoreClassLoader.java",
+        "sha256": "36aa7dd58f30fb466672c2592a38b1bf5fb077e78cab1bc2bce282d8e42b2b51"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/PropertiesReader.java",
+        "sha256": "3b37a1a80ca9670fcb0751de6168c4307adac009e78dcf58a50fc49d414b3dbd"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/AcceptedPatternsChecker$IsAccepted.java",
+        "sha256": "3cdcf7b649b4822889aed53a462f7601a9b306b45732487d2ba194148a8bd7fa"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ConstructionContext.java",
+        "sha256": "3dae5f7595b40f6ec7d29498da7a95651cf82e885a6f0607b4d4bb43c6d1b105"
+      },
+      {
+        "name": "com/opensymphony/xwork2/config/providers/XmlConfigurationProvider.java",
+        "sha256": "4193b6c0068e061941dabf2d5b24ab8e816848fcddc2a48a7f0479f087d9a5d2"
+      },
+      {
+        "name": "com/opensymphony/xwork2/validator/DefaultActionValidatorManager.java",
+        "sha256": "50342836dac422ff15facc08579a396fd462cc33a25c7c1b84fb93ff291c7f8a"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/NotExcludedAcceptedPatternsChecker.java",
+        "sha256": "54620038fd182584926ce3f4f82ca47a7e93cf2cf0242c815c5be5efc81aa2b2"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/StrutsJarURLConnection$1.java",
+        "sha256": "5486b1feef24572cc712b25049b5142e3b6f999910a31af525fcede82b65fd9f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ResolverUtil.java",
+        "sha256": "56973e47f1632ed4c78f1276821c284436d1f648ad8138003b8f760832fad504"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/Scope$5$1.java",
+        "sha256": "56be69338b74bcde14346d8abcac2637d9ab7821472b55b067168f975fb633b1"
+      },
+      {
+        "name": "org/apache/struts2/result/StreamResult.java",
+        "sha256": "58f81c3735737fb3b3b8a998317e8273431571abae2b3da6a81c8512abc1f550"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/classloader/ReloadingClassLoader.java",
+        "sha256": "60495a2c7878fee9c3e1429cafd1c8ccc866c1423509ee70f54cc339d89851bf"
+      },
+      {
+        "name": "com/opensymphony/xwork2/validator/AnnotationActionValidatorManager.java",
+        "sha256": "63e47c4613d16004925f85fd9ae23dce66f9a91014c08c15762fb1fc5dcb709c"
+      },
+      {
+        "name": "org/apache/struts2/result/PostbackResult.java",
+        "sha256": "645913c1e9c79f2b0afa3b6cec918512e19b6b4dc1c3a06e07a2a849666b426a"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/DefaultExcludedPatternsChecker.java",
+        "sha256": "6acc11f82057a293776473c940b34b81ae956202ae06d9ad46a5509af0c3d28f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/interceptor/StaticParametersInterceptor.java",
+        "sha256": "6b556a00205f2a753e93c14f4d448c4fba1d1b48275f2ad94d2321483a93e8e0"
+      },
+      {
+        "name": "org/apache/struts2/views/freemarker/StrutsClassTemplateLoader.java",
+        "sha256": "6e454bee3f3875acf1761c28f0f757b85d4b992e5abcfaf96ae22633d82731af"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/location/LocationImpl.java",
+        "sha256": "6e6bd82f0d3a9eb514e970fc4594cc3090ba920c90b14ce16f40b9131891a54b"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ContainerImpl.java",
+        "sha256": "6fb288acea0410a5ff97f43ac71a77c5cd073339809c5e3451877bc5c9afacf4"
+      },
+      {
+        "name": "com/opensymphony/xwork2/conversion/impl/DefaultConversionPropertiesProcessor.java",
+        "sha256": "711ca43409ff7da6f3d8f43496a64f76f3e073a73ab586781a5f58025eac4f39"
+      },
+      {
+        "name": "org/apache/struts2/util/TokenHelper.java",
+        "sha256": "74a00cd2ff9a7cf713b1790aa4e7a12d0474e232da1bdbd84bf5ba8ce5fd068f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/location/LocationUtils.java",
+        "sha256": "758a6d48018aff57a2aa04d18776731142c4857b3a5f942b03265a9ceaec55ac"
+      },
+      {
+        "name": "com/opensymphony/xwork2/conversion/impl/XWorkConverter.java",
+        "sha256": "7b643ac79b967b6c265526caf6c2e388b6b9793f5d145a2515ab7c8260e9274b"
+      },
+      {
+        "name": "org/apache/struts2/components/Include.java",
+        "sha256": "7fd88379f397c6b20a7df84600066cdd2269772c60f04e3a5b04011ae47362a5"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/StrutsJarURLConnection.java",
+        "sha256": "80d96b5ee01c5cae5039bbb7fde8d101d6a9577a658a0c5689daec2c58eb2194"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/profiling/ObjectProfiler.java",
+        "sha256": "84aa8517a7db0b57963eb5110400246a0e2af47794919e97197f3f46c3d4f3f6"
+      },
+      {
+        "name": "org/apache/struts2/config/StrutsXmlConfigurationProvider.java",
+        "sha256": "86ae3084c0f4d12563639690e5aaac5c87166ab02717a815a78f8677bf08a5b3"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ClassFinder$ClassInfo.java",
+        "sha256": "87a3ba75e2f278ea7a11cb14d90c6fbb906844db32077113ad3cf95c58e6fa91"
+      },
+      {
+        "name": "com/opensymphony/xwork2/ognl/OgnlValueStack.java",
+        "sha256": "8855d6cfbfc9dd42ceac149da9ba96fc3ff4328375640cbcaf2a6d4c6d0d1fc7"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ProxyUtil.java",
+        "sha256": "8aea42f441d34ed0351069225fd6d576145e0c9321c97f5498843ac0faf9ce02"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/AcceptedPatternsChecker.java",
+        "sha256": "8b5b58ed1383aa7730b70cbfc0b14563d835b4ee45ba56c46c52a40e0b36c30f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/DefaultAcceptedPatternsChecker.java",
+        "sha256": "8b892b403c9f048ca4c18ff05c41b953e67773227541bc13f5923819a01a1b65"
+      },
+      {
+        "name": "com/opensymphony/xwork2/config/providers/XWorkConfigurationProvider.java",
+        "sha256": "8eac3109c501b1c3684fb4dc04f19772ff3c6b230fe1dc8525cbd04978bec744"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/UrlSet$FileProtocolNormalizer.java",
+        "sha256": "91734585b3a964021c137360c4a6e89413e80cc08b9062ca6c5f3782c94e29e5"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/AbstractLocalizedTextProvider.java",
+        "sha256": "92f577d61b6ed0ea5b17b89d2352d0c8b9ad5aa0f0e4255c7cb32a5a8f74369a"
+      },
+      {
+        "name": "org/apache/struts2/dispatcher/InitOperations.java",
+        "sha256": "95166bd2ff5fab8c5f8abdf24c3b56cc7e7cb80592e9a0547c459650fe37d3c5"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/DependencyException.java",
+        "sha256": "958ed071e88d0c4146355a39a0f7408da12e35b789fa26a5e0ff2c5e6eac769f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ResolverUtil$ClassTest.java",
+        "sha256": "9ab6b55a9f20f579695c2e794b4b713607f58cb6fbf5a0d9badaf3d67e63428f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ClassLoaderUtil$AggregateIterator.java",
+        "sha256": "9b22bb5b45f9914c4c5f57eb2ff382628db41ad7997f9776fc366e6a7b1b5881"
+      },
+      {
+        "name": "org/apache/struts2/interceptor/servlet/ServletPrincipalProxy.java",
+        "sha256": "9b906b96f3b24f79b7bb8368e432e1328b74add99386be6c7ad13bd1bd3c08e1"
+      },
+      {
+        "name": "com/opensymphony/xwork2/validator/DefaultValidatorFactory.java",
+        "sha256": "9f61eafc046a8f315fb3efacf3cec4f48f7f753b125f2cd13f4745d1240eec96"
+      },
+      {
+        "name": "org/apache/struts2/util/StrutsUtil.java",
+        "sha256": "a0beff392cdda74c6469b23819e2385c0161589de89d941d9b17a598312f2005"
+      },
+      {
+        "name": "org/apache/struts2/result/StrutsResultSupport$EncodingParsedValueEvaluator.java",
+        "sha256": "a1b75ff92b38025f46ebd2ed1649086b8edf95ee3587811e0acc7a9eb433e8d6"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/ExcludedPatternsChecker$IsExcluded.java",
+        "sha256": "a1d72d50703e446496349514455a957151a793add77f490d3cfdca4818f678e8"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/DefaultNotExcludedAcceptedPatternsChecker.java",
+        "sha256": "a6da75076273acc81f402040ce756e8bd477bdd40039e0fcae5058b98a43581e"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/Scope$4$1.java",
+        "sha256": "a7b8a206e12981ce8eb94ee317d69a6bf13ab991affdca1ba8c75ef8f66f3435"
+      },
+      {
+        "name": "org/apache/struts2/util/fs/JBossFileManager.java",
+        "sha256": "a8c485bd60a9a4671a3d538e94b0fe97219e36f4b4e3b788afd688d68d03c11d"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/DefaultFileManager.java",
+        "sha256": "a9db538febb3fd8eaeadca370f7b09bc687d974fca961e21c54d9f06129aaf8a"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ResolverUtil$NameIs.java",
+        "sha256": "ac618deb35653268cbbcee9a4ddb9060341828c58d77907ce1c7ef8262974d14"
+      },
+      {
+        "name": "com/opensymphony/xwork2/ObjectFactory.java",
+        "sha256": "ac744ff13b6b29588c163a3fdd0a2ea733f7f5132e3f8ff9256cd697825497c4"
+      },
+      {
+        "name": "com/opensymphony/xwork2/XWorkException.java",
+        "sha256": "aee6ab1f42bc5c0997a40063f2abcb8508484d62424551b89c6833e65d121511"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/ExcludedPatternsChecker.java",
+        "sha256": "b18bf0a94236d0d151459416bd7543d404b09d8d21685614d45932ac21febb56"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/GlobalLocalizedTextProvider.java",
+        "sha256": "b18c55d3ec092fda4a167a06ea16633ceb17168a208a3a42c1e57775876bd95c"
+      },
+      {
+        "name": "com/opensymphony/xwork2/FileManager.java",
+        "sha256": "b7388ed14e4e5bf8924982dea464a74a1f592739fdd4b9a793481695f7caaf3f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/Revision.java",
+        "sha256": "b7de097e11702e6c06da719df73cbcf438e4c3ea79f9a6b4b23884080da6539b"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ContainerBuilder$4.java",
+        "sha256": "c389b09c5af68085b9b9f02b2b0377eabe30ef6a45bca7b9202b963ec3e288b6"
+      },
+      {
+        "name": "org/apache/struts2/dispatcher/Dispatcher.java",
+        "sha256": "c421781327a0e24b19ee548e3d7052981cb50860c7d65ebddfd70bef804abf29"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/ConstructionContext$DelegatingInvocationHandler.java",
+        "sha256": "c86c0a59e72c0195cf941f52a3b7edea69ea18b8863ef8fab7dcbfb60ec23a6e"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ClassFinderFactory.java",
+        "sha256": "cc5364d05e02c2d2aba51936b71886aa24f85d0c5a3acd49da37fe70f8ac3390"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/fs/JarEntryRevision.java",
+        "sha256": "ccbf4656367b6b05acf966f7c2f26543a0b48d227315d0940c7ba592e6be8c5a"
+      },
+      {
+        "name": "com/opensymphony/xwork2/inject/util/ReferenceCache.java",
+        "sha256": "d175bc4178bfc2d1d866ff1582dcd0dc169e37672327895d02da4ae7354e3de7"
+      },
+      {
+        "name": "org/apache/struts2/views/velocity/VelocityManager.java",
+        "sha256": "d511070ed66922e8a65cf6818ccc7bfccae015b6bbded8dc1b311065e40b0a40"
+      },
+      {
+        "name": "com/opensymphony/xwork2/security/NotExcludedAcceptedPatternsChecker$IsAllowed.java",
+        "sha256": "d6d0da3b0722a0c97dacd38b4a5d1dbbb50f55741877e3abe00922735abf6dd8"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/ResolverUtil$Test.java",
+        "sha256": "daccf4852e233142503742dd2c853961870186fd29c79d9f89c08745a590987f"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/ClassFinder.java",
+        "sha256": "dad5ea0908d896cd43d5721d748fbacd4719e4ce630a697435ba922ea133c649"
+      },
+      {
+        "name": "com/opensymphony/xwork2/util/finder/UrlSet.java",
+        "sha256": "dee330464f36a91a67c0e530ba34ac1906e4424649b5a2ec3aface057557c576"
+      },
+      {
+        "name": "com/opensymphony/xwork2/InvalidMetadataException.java",
+        "sha256": "e34149679d20f34bf8318b390b4f9a39a849e67309f338292d0984767af54211"
+      },
+      {
+        "name": "org/apache/struts2/util/FastByteArrayOutputStream.java",
+        "sha256": "ed3d2543c952fe2c96fdd671857d7a59b5edb84f196c51313f12038bebf295fb"
+      },
+      {
+        "name": "org/apache/struts2/interceptor/CookieInterceptor.java",
+        "sha256": "eeb621b6ef41cfbb08ae5c7f72fd0a08c341ce888dbb1efed438f5bde830ffb6"
+      },
+      {
+        "name": "com/opensymphony/xwork2/conversion/impl/DefaultConversionFileProcessor.java",
+        "sha256": "f4320d4971c1fcef1e3868a45723f78b5c260b4314765a576ff7e60d9b4d791d"
+      },
+      {
+        "name": "org/apache/struts2/components/template/FreemarkerTemplateEngine.java",
+        "sha256": "f8d47ff6f6520299c8eeb5dca9df51e8cd1994bf848cd821455ad80aff5f72e3"
+      },
+      {
+        "name": "com/opensymphony/xwork2/conversion/impl/DefaultConversionAnnotationProcessor.java",
+        "sha256": "fcaebbd9bf42a6d6213276514576dd5a9afa518d928f2cf1107a2848cf672a27"
+      },
+      {
+        "name": "com/opensymphony/xwork2/interceptor/AliasInterceptor.java",
+        "sha256": "fce8642e0c0c066fdd5ce617216401ee3a0de97cd72b7862ac0b900c64e9e75e"
+      },
+      {
+        "name": "com/opensymphony/xwork2/interceptor/ParametersInterceptor.java",
+        "sha256": "fcee3b68fd0696b350ce2865a7e3848900b297faab7a6ca0619c5a1cf8e16a7d"
+      }
+    ]
+  },
+  "results": {
+    "heuristics": [
+      {
+        "attack_ids": [],
+        "heur_id": 7,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 8,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 9,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 10,
+        "signatures": []
+      }
+    ],
+    "tags": {
+      "file.jar.imported_package": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.config.entities==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.config.impl==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.config.providers==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.config==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.conversion.annotations==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.conversion.impl==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.conversion.metadata==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.conversion==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.factory==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.inject.util==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.inject==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.interceptor.annotations==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.interceptor==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.mock==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.ognl.accessor==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.ognl==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.result==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.security==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.spring.interceptor==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.spring==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.test==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.classloader==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.finder==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.fs==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.location==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.logging.commons==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.logging.jdk==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.logging.log4j2==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.logging.slf4j==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.logging==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.profiling==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util.reflection==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.util==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.validator.annotations==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.validator.validators==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2.validator==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "com.opensymphony.xwork2==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.cache==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.core==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.ext.beans==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.ext.jsp==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.ext.servlet==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.ext.util==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.template.utility==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "freemarker.template==2.3"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.servlet"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.servlet.http"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.servlet.jsp"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.servlet.jsp.tagext"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.xml.parsers"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.xml.transform"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.xml.transform.dom"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.xml.transform.sax"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "javax.xml.transform.stream"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "junit.framework"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "ognl"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.fileupload.disk==1.4"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.fileupload.servlet==1.4"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.fileupload.util==1.4"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.fileupload==1.4"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.lang3.math==3.8"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.lang3.reflect==3.8"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.lang3.text==3.8"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.lang3.time==3.8"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.lang3==3.8"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.commons.logging==1.2"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.logging.log4j.message==2.12"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.logging.log4j==2.12"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.components.template==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.components==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.config==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.conversion==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher.filter==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher.listener==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher.mapper==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher.multipart==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher.servlet==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.dispatcher==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.factory==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.interceptor.debugging==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.interceptor.servlet==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.interceptor.validation==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.interceptor==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.result==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.static==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.util.fs==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.util.tomcat.buf==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.util==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.annotations==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.freemarker.tags==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.freemarker==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.jsp.iterator==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.jsp.ui.table==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.jsp.ui==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.jsp==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.util==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.velocity.components==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.velocity==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views.xslt==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2.views==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.struts2==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.app"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.app.event"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.context"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.exception"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.runtime.directive"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.runtime.parser.node"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.runtime.resource"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.runtime.resource.loader"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.tools.view"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.tools.view.context"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.tools.view.servlet"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.apache.velocity.util.introspection"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.junit"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.slf4j==1.7"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.beans"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.beans.factory"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.beans.factory.config"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.beans.factory.support"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.context"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.context.support"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.springframework.web.context"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.testng.annotations==5.14"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.w3c.dom"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.xml.sax"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "org.xml.sax.helpers"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.archive.ajax==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.archive.simple==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.archive.xhtml==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.css_xhtml==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.simple==2.5"
+        },
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "template.xhtml==2.5"
+        }
+      ]
+    },
+    "temp_submission_data": {}
+  }
+}

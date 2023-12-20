@@ -1,75 +1,13 @@
-import json
 import os
-import shutil
 
 import pytest
-from assemblyline.odm.messages.task import Task as ServiceTask
 from assemblyline_service_utilities.common.keytool_parse import keytool_printcert
-from assemblyline_v4_service.common.request import ServiceRequest
-from assemblyline_v4_service.common.task import Task
 
 # Getting absolute paths, names and regexes
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(TEST_DIR)
-SERVICE_CONFIG_NAME = "service_manifest.yml"
-SERVICE_CONFIG_PATH = os.path.join(ROOT_DIR, SERVICE_CONFIG_NAME)
-TEMP_SERVICE_CONFIG_PATH = os.path.join("/tmp", SERVICE_CONFIG_NAME)
-
-# Samples that we will be sending to the service
-sample1 = dict(
-    sid=1,
-    metadata={},
-    service_name='espresso',
-    service_config={},
-    fileinfo=dict(
-        magic='Zip archive data, at least v2.0 to extract Zip archive data, made by v2.0, extract using at least '
-              'v2.0, last modified Fri Nov 22 13:25:57 2013, uncompressed size 239, method=deflate',
-        md5='762c340965c408900af83290a0c638b4',
-        mime='application/zip',
-        sha1='c727718ef0b7314979ddef22058c35022b7caedc',
-        sha256='121723c86cb7b24ad90f68dde901fe6dec0e337d8d3233cd5ef0d58f07d47487',
-        size=4092,
-        type='java/jar',
-    ),
-    filename='121723c86cb7b24ad90f68dde901fe6dec0e337d8d3233cd5ef0d58f07d47487',
-    min_classification='TLP:W',
-    max_files=501,  # TODO: get the actual value
-    ttl=3600,
-)
-
-
-@pytest.fixture
-def class_instance():
-    temp_service_config_path = os.path.join("/tmp", SERVICE_CONFIG_NAME)
-    try:
-        # Placing the service_manifest.yml in the tmp directory
-        shutil.copyfile(SERVICE_CONFIG_PATH, temp_service_config_path)
-
-        from espresso import Espresso
-        yield Espresso()
-    finally:
-        # Delete the service_manifest.yml
-        os.remove(temp_service_config_path)
 
 
 class TestEspresso:
-
-    @classmethod
-    def setup_class(cls):
-        # Placing the samples in the tmp directory
-        samples_path = os.path.join(TEST_DIR, "samples")
-        for sample in os.listdir(samples_path):
-            sample_path = os.path.join(samples_path, sample)
-            shutil.copyfile(sample_path, os.path.join("/tmp", sample))
-
-    @classmethod
-    def teardown_class(cls):
-        # Cleaning up the tmp directory
-        samples_path = os.path.join(TEST_DIR, "samples")
-        for sample in os.listdir(samples_path):
-            temp_sample_path = os.path.join("/tmp", sample)
-            os.remove(temp_sample_path)
-
     @staticmethod
     @pytest.mark.parametrize(
         "cert_path, printcert",
@@ -167,41 +105,3 @@ class TestEspresso:
         """
         cert = keytool_printcert(cert_path)
         assert cert == printcert
-
-    @staticmethod
-    @pytest.mark.parametrize("sample",
-                             [
-                                 sample1
-                             ])
-    def test_execute(class_instance, sample):
-        # Creating the required objects for execution
-        service_task = ServiceTask(sample1)
-        task = Task(service_task)
-        class_instance._task = task
-        service_request = ServiceRequest(task)
-
-        # Actually executing the sample
-        class_instance.execute(service_request)
-
-        # Get the result of execute() from the test method
-        test_result = task.get_service_result()
-
-        # Get the assumed "correct" result of the sample
-        correct_result_path = os.path.join(TEST_DIR, "results", task.file_name + ".json")
-        with open(correct_result_path, "r") as f:
-            correct_result = json.loads(f.read())
-
-        # Assert that the appropriate sections of the dict are equal
-
-        # Avoiding date in the response
-        test_result_response = test_result.pop("response")
-        correct_result_response = correct_result.pop("response")
-        assert test_result == correct_result
-
-        # Comparing everything in the response except for the date
-        test_result_response.pop("milestones")
-        test_result_response["supplementary"][0].pop("path")
-        correct_result_response.pop("milestones")
-        correct_result_response["supplementary"][0].pop("path")
-
-        assert test_result_response == correct_result_response
