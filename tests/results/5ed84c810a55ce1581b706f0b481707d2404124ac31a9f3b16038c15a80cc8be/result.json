@@ -1,0 +1,479 @@
+{
+  "extra": {
+    "drop_file": false,
+    "score": 81,
+    "sections": [
+      {
+        "auto_collapse": false,
+        "body": "All suspicious class files were saved as supplementary files.",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Analysis of the JAR file",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Meta Information]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Manifest File Information Extract",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "Owner: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nIssuer: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nSerial number: 53be0d7c\nValid from: Thu Jan 06 22:14:27 UTC 2022 until: Wed Apr 06 22:14:27 UTC 2022\nCertificate fingerprints:\n\t SHA1: 32:D1:42:D2:22:D0:A1:8C:9D:19:D5:B8:89:17:C7:47:7A:F1:CD:28\n\t SHA256: 03:3E:BA:44:19:96:4C:40:D1:E4:BF:0B:A9:0B:D4:FE:8A:6C:17:B9:64:AD:67:13:9C:1D:98:6C:70:CA:1F:88\nSignature algorithm name: SHA256withRSA\nSubject Public Key Algorithm: 2048-bit RSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: 15 84 6F 04 5F 1D 22 2D   10 C4 DE B7 E7 E7 3B DF  ..o._.\"-......;.\n0010: 04 2A 3B B3                                        .*;.\n]\n]",
+        "body_config": {},
+        "body_format": "MEMORY_DUMP",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "cert": {
+            "issuer": [
+              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+            ],
+            "owner": [
+              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+            ],
+            "valid": {
+              "end": [
+                "Wed Apr 06 22:14:27 UTC 2022"
+              ],
+              "start": [
+                "Thu Jan 06 22:14:27 UTC 2022"
+              ]
+            }
+          }
+        },
+        "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 3,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 11,
+          "score": 1,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Certificate is self-signed",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Suspicious classes]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/lang/Runtime: 40",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 10,
+          "score": 50,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Runtime Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/lang/ClassLoader: 5",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 7,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Classloader Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/security/*: 8",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 8,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Security Found",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "java/net/URL: 8",
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:CLEAR",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 9,
+          "score": 10,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "URL Found",
+        "zeroize_on_tag_safe": false
+      }
+    ]
+  },
+  "files": {
+    "extracted": [],
+    "supplementary": [
+      {
+        "name": "club/thom/tfm/blacklist/TailRender.java",
+        "sha256": "008d41a13edce7b9979fe9951f439312d296cb6250a2614b22ce67946faafc4e"
+      },
+      {
+        "name": "com/google/protobuf/UnknownFieldSetLite.java",
+        "sha256": "0290e07607bdfe3eb9f824815c598d301c477c1fae53e6864c5b05b3239bbba1"
+      },
+      {
+        "name": "com/google/protobuf/BinaryWriter$SafeDirectWriter.java",
+        "sha256": "036d42cec0ebc9a5b5586b43b53b75c53bae48c1265650c21ce8e2f4f9c4a9b3"
+      },
+      {
+        "name": "com/google/protobuf/FieldSet.java",
+        "sha256": "08e48f43e82ad75a98d010070555db90ace4f0376cb959f9b69ba5634ac28ab2"
+      },
+      {
+        "name": "com/google/protobuf/MessageSchema.java",
+        "sha256": "0dc90947835d3d54d4ea09e312c6e2a60f45a4277ceeb4a0515f423191cd5c50"
+      },
+      {
+        "name": "com/google/protobuf/MapEntryLite.java",
+        "sha256": "0e034b58c274a9c1e89acd76fa74ae8f1103855459c2c05a34a247a6cc43ffab"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/HandshakeReader.java",
+        "sha256": "0fc6336b730a044ffb4d99d7bdb0350de6be04a8cf0c4e15ab6adcb1edd5f89f"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/WebSocketFactory.java",
+        "sha256": "111456039e082b999af667024efe5e0560a0ac5c59a508e3b85bd3f8f3b73cef"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/PeriodicalFrameSender.java",
+        "sha256": "130587881673249238452d089033bba23466411ca43719100b769de2a55c5b4b"
+      },
+      {
+        "name": "com/google/protobuf/SchemaUtil.java",
+        "sha256": "1976c07e284088fc9e133e6090bfcd05cfbad2e09455523937d5117d4b10cfc3"
+      },
+      {
+        "name": "com/google/protobuf/UnknownFieldSet$Field.java",
+        "sha256": "20fbb238261b717b0481c0a29d9b8bd8c4c0be90667aca0b47f0571252ca9260"
+      },
+      {
+        "name": "com/google/protobuf/Struct$Builder.java",
+        "sha256": "259058922fa3b812aecbf24dd7e069346aa2973bdb640d0c851108ab4d76dd1c"
+      },
+      {
+        "name": "club/thom/tfm/helpers/UUIDHelper.java",
+        "sha256": "28d74747b87e9885077f5b2b7a7ff67b416f3568630d97a59b96e49f443c2146"
+      },
+      {
+        "name": "com/google/protobuf/MapEntry$Builder.java",
+        "sha256": "2a048f9073e1bbb334d5f29d984da7c7204f1d5a229f4feda5771e7b657a23dc"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessage.java",
+        "sha256": "3977f26cd92207dd4e8b0f133e8670f99cd7decdd62d27128cc8322cc051897b"
+      },
+      {
+        "name": "com/google/protobuf/Internal.java",
+        "sha256": "3afecf72181ebe2be15b86e2e21271c98c118c4488382f70ba4116c12656830e"
+      },
+      {
+        "name": "com/google/protobuf/UninitializedMessageException.java",
+        "sha256": "3bf6422d64c97b76b398be1ad480e3d45ef5706f2b4c9c89fdb1b976fb022324"
+      },
+      {
+        "name": "com/google/protobuf/UnsafeUtil$1.java",
+        "sha256": "5a6e6d0e98f54390d26a8e098f5ba080a179d612d63a9147d392b27c218e0110"
+      },
+      {
+        "name": "com/google/protobuf/Descriptors$FieldDescriptor.java",
+        "sha256": "5b3b566f86f9dbc3baec08aaca028de8f822f44db0780546d7ab803c4faaa467"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessage$4.java",
+        "sha256": "5cb2c600573b6f7a1e92f088eebc63fbbe3958b0b9ef84ea5882c468aa7722fa"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageLite$Builder.java",
+        "sha256": "60ee33f4bc2d9c28dc538269ca7b1f00c3bccd2ae45f4873cad1c616804b42f2"
+      },
+      {
+        "name": "gg/essential/loader/stage0/EssentialLoader.java",
+        "sha256": "7288cbfeddad6b8467d7116f14c43a168af416577bd967ade800741403222af7"
+      },
+      {
+        "name": "com/google/protobuf/AbstractMessageLite.java",
+        "sha256": "7d25a41c561eb5729200cb4f598190074adedca99b5aec4d63b4755de335f7ae"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/DistinguishedNameParser.java",
+        "sha256": "85c32c141c095f97d7b07332c4c81d89095fe46c2f93a62dba7c3303e68270f7"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageLite$SerializedForm.java",
+        "sha256": "89632d8b7623452fbdf9ecae956dd75a65733fe9da2b8683fefd84f9f7e582f3"
+      },
+      {
+        "name": "com/google/protobuf/DescriptorMessageInfoFactory.java",
+        "sha256": "91f10168d06d2949c8373b1f24d70ab418556bcebecacdb2d2ef0002ac45caa4"
+      },
+      {
+        "name": "com/google/protobuf/BinaryWriter$SafeHeapWriter.java",
+        "sha256": "95829c4a34c058fb2bf215defe5f2d6600f8083537029556bab88ebccabe7419"
+      },
+      {
+        "name": "TFM.RSA",
+        "sha256": "966bb17d84236e4fa1e735f3d71de7118d0d5086daecc1ae8d7ca2c97915d514"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageInfoFactory.java",
+        "sha256": "9940fc96fa04c039fdc560c41aacd717a5dc3bf17ecba1bc90ec38fc4991f471"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageV3.java",
+        "sha256": "a390029a79cb22b9374fade298c38ad30cfc398034ae9dd5051eb4cd1b18064f"
+      },
+      {
+        "name": "com/google/protobuf/BinaryWriter$UnsafeHeapWriter.java",
+        "sha256": "a6b39efb33615583bc07e301658ef2d65a6a9c92b9dbfd70321e4a2158b3295a"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageV3$Builder.java",
+        "sha256": "a7fe2dbd75565219a4f271dcbba76c66de66a282ee7f73e806ae8cd0bc5be1be"
+      },
+      {
+        "name": "club/thom/tfm/helpers/BackendInteraction.java",
+        "sha256": "b342ca1daeaab3bfb9915610efb316096de58f4ea9e673d64712a3823c321966"
+      },
+      {
+        "name": "com/google/protobuf/AbstractMessageLite$Builder.java",
+        "sha256": "b6b563ce4bb43df2b14e5509e966f04fee9ac4df5077b6cd5be823ad73cba967"
+      },
+      {
+        "name": "com/google/protobuf/WireFormat.java",
+        "sha256": "bd5eb1c98450214a3082cb9831c6552559ec04ace71e71700146f6c54d3efd44"
+      },
+      {
+        "name": "club/thom/tfm/TFM.java",
+        "sha256": "c04a2fa59c2bb06ed066e060c30ff47791e7cc2a3a1c9f1b8e67d9c62fd86d66"
+      },
+      {
+        "name": "gg/essential/loader/stage0/EssentialSetupTweaker.java",
+        "sha256": "c0743385001c12b4558e00fce11bb56c73c1b3278a652a345b135dd9c6bcb1f4"
+      },
+      {
+        "name": "com/google/protobuf/BinaryReader$SafeHeapReader.java",
+        "sha256": "c11608c9a548b26c6a36c92d7fa7441edfc34ffae63ea8b5583f40e7f37db789"
+      },
+      {
+        "name": "com/google/protobuf/FieldType.java",
+        "sha256": "c19852520aee9163a9831873cd1a6e4f9c47b2de8b69828f1b5114da8af0c6b6"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/HostnameUnverifiedException.java",
+        "sha256": "c72770f6ce0e85734f209ab3fbfb6861357e449580d33e64a02eae7e72ddd927"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/OkHostnameVerifier.java",
+        "sha256": "cb43a942787535fb7fd1fa5eb30bf48102b03b865e7d295b2ab4120d8fd13d22"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessageLite.java",
+        "sha256": "cfc3f720b8864cd2381283bdf977ef50eb5a9876fbee60e80cea4b54d48b7fbc"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/ProxySettings.java",
+        "sha256": "d3a4209d5dec1d727b401ad0f7530b360f4b1c9467ce62f1b7e0efc4030e1d1a"
+      },
+      {
+        "name": "com/google/protobuf/Struct.java",
+        "sha256": "d5a5fe7451949b5d2a69d13299491cbc79034fb3acce4f51be01802b8f0e5e05"
+      },
+      {
+        "name": "com/google/protobuf/Descriptors$FileDescriptor.java",
+        "sha256": "de67e5b549b83615154e916ba40c6251f32d17aae153535ca2b2ea7897b95800"
+      },
+      {
+        "name": "com/google/protobuf/BinaryWriter$UnsafeDirectWriter.java",
+        "sha256": "de9739b5b3da22c135536ae344c28e507d0db2f8a45f2c017a90dfdf1ee30fe8"
+      },
+      {
+        "name": "com/google/protobuf/TextFormat$Parser.java",
+        "sha256": "de9b419074dfa43ab9ecbf5430d24b454536119f142a50d8dc43cacbf13150ef"
+      },
+      {
+        "name": "club/thom/tfm/helpers/KeyInputHandler.java",
+        "sha256": "e0125cb228b90534049f848ed82c5f9190505cd491f0fedf77e92474c9300d43"
+      },
+      {
+        "name": "com/neovisionaries/ws/client/Misc.java",
+        "sha256": "e0937fbc3b6f06517d2cd656490d00554244cb51495d7e4e171cb8f5a3598bce"
+      },
+      {
+        "name": "com/google/protobuf/UnknownFieldSet.java",
+        "sha256": "e39fa06e6507de597bbb39ef45c870c78f26db4cf359da290b17d716cd3d9fa4"
+      },
+      {
+        "name": "com/google/protobuf/GeneratedMessage$Builder.java",
+        "sha256": "e550a3da64c6074964c9737362c9f37111eec4f65db7adeeecae37356de2e651"
+      },
+      {
+        "name": "com/google/protobuf/UnsafeUtil.java",
+        "sha256": "e5770ef6f93795756b3d1c8277b85a3efe23ebcf215caf08f92c37309c5499f8"
+      },
+      {
+        "name": "com/google/protobuf/RpcUtil$AlreadyCalledException.java",
+        "sha256": "f2e43ed6564d3ae1f14bbcd806c3f38a5be77f559660297b96475b3564402105"
+      },
+      {
+        "name": "com/google/protobuf/MapEntry.java",
+        "sha256": "f4e5513ad960c01c8659874044e3cb3eb874ad1cf480769d22a57f8102ed41fe"
+      },
+      {
+        "name": "com/google/protobuf/UnknownFieldSet$Builder.java",
+        "sha256": "fda0195f531cd3038a21c1109b14ebcbf7a367eb7c773c19024aafda1942e481"
+      },
+      {
+        "name": "com/google/protobuf/CodedInputStreamReader.java",
+        "sha256": "fffdb898eeb09701037f8e80272e9d3dbdbb95617e03efc0cbb35f1cb1a3a133"
+      }
+    ]
+  },
+  "results": {
+    "heuristics": [
+      {
+        "attack_ids": [],
+        "heur_id": 7,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 8,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 9,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 10,
+        "signatures": []
+      },
+      {
+        "attack_ids": [],
+        "heur_id": 11,
+        "signatures": []
+      }
+    ],
+    "tags": {
+      "cert.issuer": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+        }
+      ],
+      "cert.owner": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+        }
+      ],
+      "cert.valid.end": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Wed Apr 06 22:14:27 UTC 2022"
+        }
+      ],
+      "cert.valid.start": [
+        {
+          "heur_id": null,
+          "signatures": [],
+          "value": "Thu Jan 06 22:14:27 UTC 2022"
+        }
+      ]
+    },
+    "temp_submission_data": {}
+  }
+}
