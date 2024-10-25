@@ -1,0 +1,329 @@
+{
+  "extra": {
+    "drop_file": false,
+    "score": 100,
+    "sections": [
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 0,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 2,
+          "score": 100,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {
+          "file": {
+            "behavior": [
+              "Embedded PE"
+            ]
+          }
+        },
+        "title_text": "Embedded executable files found. There may be a malicious intent.",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Analysis of the JAR file",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Meta Information]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 2,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Manifest File Information Extract",
+        "zeroize_on_tag_safe": false
+      }
+    ]
+  },
+  "files": {
+    "extracted": [
+      {
+        "name": "0.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "1.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "10.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "11.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "12.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "13.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "14.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "15.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "16.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "17.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "18.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "19.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "2.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "20.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "21.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "22.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "23.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "24.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "25.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "26.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "27.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "28.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "29.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "3.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "30.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "31.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "32.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "33.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "34.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "35.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "36.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "37.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "38.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "39.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "4.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "40.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "41.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "42.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "43.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "44.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "45.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "46.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "47.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "48.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "49.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "5.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "50.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "51.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "52.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "53.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "54.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "55.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "56.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "57.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "6.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "7.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "8.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "9.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      }
+    ],
+    "supplementary": []
+  },
+  "results": {
+    "heuristics": [
+      {
+        "attack_ids": [],
+        "heur_id": 2,
+        "signatures": []
+      }
+    ],
+    "tags": {
+      "file.behavior": [
+        {
+          "heur_id": 2,
+          "signatures": [],
+          "value": "Embedded PE"
+        }
+      ]
+    },
+    "temp_submission_data": {}
+  }
+}
