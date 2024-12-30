@@ -21,6 +21,6 @@ build:
 		--pull \
 		--build-arg version=$(VERSION) \
 		--build-arg branch=stable \
-		-t $(REGISTRY)$(ORG)assemblyline-service-onenote:$(TAG)\
+		-t $(REGISTRY)$(ORG)assemblyline-service-espresso:$(TAG)\
 		-f ./Dockerfile \
 		.

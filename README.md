@@ -1,14 +1,13 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg?sanitize=true)](https://discord.gg/GUAy9wErNu)
 [![](https://img.shields.io/discord/908084610158714900)](https://discord.gg/GUAy9wErNu)
 [![Static Badge](https://img.shields.io/badge/github-assemblyline-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline)
-[![Static Badge](https://img.shields.io/badge/github-assemblyline_service_onenote-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline-service-onenote)
-[![GitHub Issues or Pull Requests by label](https://img.shields.io/github/issues/CybercentreCanada/assemblyline/service-assemblyline-service-onenote)](https://github.com/CybercentreCanada/assemblyline/issues?q=is:issue+is:open+label:service-assemblyline-service-onenote)
-[![License](https://img.shields.io/github/license/CybercentreCanada/assemblyline-service-onenote)](./LICENSE)
+[![Static Badge](https://img.shields.io/badge/github-assemblyline_service_espresso-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline-service-espresso)
+[![GitHub Issues or Pull Requests by label](https://img.shields.io/github/issues/CybercentreCanada/assemblyline/service-espresso)](https://github.com/CybercentreCanada/assemblyline/issues?q=is:issue+is:open+label:service-espresso)
+[![License](https://img.shields.io/github/license/CybercentreCanada/assemblyline-service-espresso)](./LICENSE)
 
 # Espresso Service
 
-This Assemblyline service analyzes Java JAR files. All classes are extracted,
-decompiled and analyzed for malicious behavior.
+This Assemblyline service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.
 
 ## Service Details
 
@@ -79,7 +78,7 @@ Les services d'Assemblyline utilisent les définitions d'étiquettes suivantes:
 
 ## Exécution de ce service
 
-Il s'agit d'un service d'Assemblyline. Il est optimisé pour fonctionner dans le cadre d'un déploiement d'Assemblyline.
+Ce service est spécialement optimisé pour fonctionner dans le cadre d'un déploiement d'Assemblyline.
 
 Si vous souhaitez tester ce service localement, vous pouvez exécuter l'image Docker directement à partir d'un terminal:
 

@@ -1,2 +1,3 @@
-assemblyline-service-utilities
+assemblyline
+assemblyline-v4-service
 javatools==1.6.0
