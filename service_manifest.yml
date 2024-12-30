@@ -4,7 +4,7 @@ description: >-
   This service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.
 
 accepts: java/jar
-rejects: empty|metadata/.*r
+rejects: empty|metadata/.*
 
 stage: CORE
 category: Static Analysis

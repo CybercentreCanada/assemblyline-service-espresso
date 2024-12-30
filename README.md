@@ -1,7 +1,7 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg?sanitize=true)](https://discord.gg/GUAy9wErNu)
 [![](https://img.shields.io/discord/908084610158714900)](https://discord.gg/GUAy9wErNu)
 [![Static Badge](https://img.shields.io/badge/github-assemblyline-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline)
-[![Static Badge](https://img.shields.io/badge/github-assemblyline\_service\_onenote-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline-service-onenote)
+[![Static Badge](https://img.shields.io/badge/github-assemblyline_service_onenote-blue?logo=github)](https://github.com/CybercentreCanada/assemblyline-service-onenote)
 [![GitHub Issues or Pull Requests by label](https://img.shields.io/github/issues/CybercentreCanada/assemblyline/service-assemblyline-service-onenote)](https://github.com/CybercentreCanada/assemblyline/issues?q=is:issue+is:open+label:service-assemblyline-service-onenote)
 [![License](https://img.shields.io/github/license/CybercentreCanada/assemblyline-service-onenote)](./LICENSE)
 
@@ -11,12 +11,6 @@ This Assemblyline service analyzes Java JAR files. All classes are extracted,
 decompiled and analyzed for malicious behavior.
 
 ## Service Details
-
-### Notes
-This service does not require you to buy any licence and is preinstalled and
-working after a default installation
-
-### Execution
 
 The service extracts all the files from inside the Jar then performs analysis of the different
 files for malicious behavior. For all the `.java` files found inside the jar, the service will
@@ -57,10 +51,18 @@ To add this service to your Assemblyline deployment, follow this
 
 General Assemblyline documentation can be found at: https://cybercentrecanada.github.io/assemblyline4_docs/
 
-
 # Service Espresso
 
 Ce service Assemblyline analyse les fichiers Java JAR. Toutes les classes sont extraites, décompilées et analysées pour détecter tout comportement malveillant.
+
+## Détails du service
+
+Le service extrait tous les fichiers à l'intérieur de la jarre puis effectue une analyse des différents
+fichiers à la recherche d'un comportement malveillant. Pour tous les fichiers `.java` trouvés dans le jar, le service va
+exécute l'outil `CFR Decompiler` pour obtenir une version du code lisible par l'homme.
+
+Lorsqu'un fichier contenu dans le jar est considéré comme potentiellement malveillant, il est ajouté en tant que fichier supplémentaire aux résultats afin que les analystes puissent le lire.
+aux résultats afin que les analystes puissent voir le contenu de ce fichier.
 
 ## Variantes et étiquettes d'image
 
