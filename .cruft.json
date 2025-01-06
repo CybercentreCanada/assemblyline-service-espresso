@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/CybercentreCanada/assemblyline-service-template.git",
-  "commit": "6d2fcb683f00eeda843cf2c40981e266679a97dc",
+  "commit": "99becf8ed2990a4063a5bb1f8ce878824a5a1a7b",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -8,15 +8,15 @@
       "__svc_name": "espresso",
       "__repository": "assemblyline-service-espresso",
       "__pkg_name": "espresso",
+      "class_name": "Espresso",
       "short_description": "This Assemblyline service analyzes Java JAR files. All classes are extracted, decompiled and analyzed for malicious behavior.",
-      "short_description_fr": "Ce service Assemblyline analyse les fichiers Java JAR. Toutes les classes sont extraites, d\u00e9compil\u00e9es et analys\u00e9es pour d\u00e9tecter tout comportement malveillant.",
+      "short_description_fr": "Ce service Assemblyline analyse les fichiers Java JAR. Toutes les classes sont extraites, décompilées et analysées pour détecter tout comportement malveillant.",
       "stage": "CORE",
       "category": "Static Analysis",
       "org_name_full": "CybercentreCanada",
       "org_name_short": "cccs",
       "license": "mit",
-      "_template": "https://github.com/CybercentreCanada/assemblyline-service-template.git",
-      "class_name": "Espresso"
+      "_template": "https://github.com/CybercentreCanada/assemblyline-service-template.git"
     }
   },
   "directory": null
