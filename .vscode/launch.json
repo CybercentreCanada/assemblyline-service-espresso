@@ -12,7 +12,7 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "-d",
-                "espresso.Espresso",
+                "espresso.espresso.Espresso",
                 "${file}"
             ],
             "justMyCode": false,
