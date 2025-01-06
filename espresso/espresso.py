@@ -46,6 +46,9 @@ class Espresso(ServiceBase):
         self.runtime_found = 0
         self.manifest_tags = None
         self.signature_block_certs = None
+        self.num_unique_headers = {}
+        self.embedded_pes = []
+        self.launchable_files = []
 
     @staticmethod
     def get_tool_version(**_):
@@ -204,7 +207,7 @@ class Espresso(ServiceBase):
         imp_res_list,
         supplementary_files,
         decompiled_dir,
-        extract_dir,
+        extract_dir
     ):
         if start_bytes[:4] == b"\xCA\xFE\xBA\xBE":
             cur_file.seek(0)
@@ -218,17 +221,13 @@ class Espresso(ServiceBase):
             # Could not deobfuscate
             cur_file.seek(0)
             first_256 = cur_file.read(256)
+            hex_first_256 = hexdump(first_256)
 
-            ob_res = dict(
-                title_text=f"Class file {cf} doesn't have the normal class files magic bytes. "
-                "The file was re-submitted for analysis. Here are the first 256 bytes:",
-                body=hexdump(first_256),
-                body_format=BODY_FORMAT.MEMORY_DUMP,
-                heur_id=3,
-                tags=[("file.behavior", "Suspicious Java Class")],
-                files=[cur_file_path],
-            )
-            imp_res_list.append(ob_res)
+            if hex_first_256 in self.num_unique_headers:
+                self.num_unique_headers[hex_first_256].append(cur_file_path)
+            else:
+                self.num_unique_headers[hex_first_256] = [cur_file_path]
+
 
     def validate_certs(self, certs, cur_file, supplementary_files):
         """
@@ -367,6 +366,10 @@ class Espresso(ServiceBase):
                 self.manifest_tags = []
                 self.signature_block_certs = []
 
+                self.num_unique_headers = {}
+                self.embedded_pes = []
+                self.launchable_files = []
+
                 def analyze_file(root, cf, file_res, imp_res_list, supplementary_files, decompiled_dir, extract_dir):
                     cur_file_path = os.path.join(root.decode("utf-8"), cf.decode("utf-8"))
                     with open(cur_file_path, "rb") as cur_file:
@@ -377,25 +380,12 @@ class Espresso(ServiceBase):
                         ##############################
                         cur_ext = os.path.splitext(cf)[1][1:].upper()
                         if start_bytes[:2] == b"MZ":
-                            mz_res = dict(
-                                title_text=f"Embedded executable file found: {cf} " "There may be a malicious intent.",
-                                heur_id=1,
-                                tags=[("file.behavior", "Embedded PE")],
-                                score_condition=APPLET_MZ,
-                            )
-                            imp_res_list.append(mz_res)
-
+                            self.embedded_pes.append(cur_file_path)
                         ##############################
                         # Launchable in JAR
                         ##############################
                         elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                            l_res = dict(
-                                title_text=f"Launch-able file type found: {cf}" "There may be a malicious intent.",
-                                heur_id=2,
-                                tags=[("file.behavior", "Launch-able file in JAR")],
-                                score_condition=APPLET_MZ,
-                            )
-                            imp_res_list.append(l_res)
+                            self.launchable_files.append(cur_file_path)
 
                         if cur_file_path.upper().endswith(".CLASS"):
                             self.analyse_class_file(
@@ -407,8 +397,9 @@ class Espresso(ServiceBase):
                                 imp_res_list,
                                 supplementary_files,
                                 decompiled_dir,
-                                extract_dir,
+                                extract_dir
                             )
+
 
                 for root, _, files in os.walk(extract_dir.encode("utf-8")):
                     logging.info(f"Extracted: {root} - {files}")
@@ -431,8 +422,44 @@ class Espresso(ServiceBase):
                                 extract_dir,
                             )
 
-                res = ResultSection("Analysis of the JAR file")
 
+
+
+                # if irregular header byte exist, create result section for each unique header
+                for hex_256 in self.num_unique_headers.keys():
+                    ob_res = dict(
+                        title_text=f"Java class file(s) doesn't have the normal class files magic bytes. "
+                        "The file was re-submitted for analysis. Here are the first 256 bytes:",
+                        body=hex_256,
+                        body_format=BODY_FORMAT.MEMORY_DUMP,
+                        heur_id=3,
+                        tags=[("file.behavior", "Suspicious Java Class")],
+                        files=self.num_unique_headers[hex_256],
+                    )
+
+                    imp_res_list.append(ob_res)
+
+                # compile embeded files into a single heuristic
+                if len(self.embedded_pes) > 1:
+                    imp_res_list.append(dict(
+                        title_text="Embedded executable files found. There may be a malicious intent.",
+                        heur_id=1,
+                        tags=[("file.behavior", "Embedded PE")],
+                        files = self.embedded_pes,
+                        score_condition=APPLET_MZ,
+                    ))
+
+                if len(self.launchable_files) > 1:
+                    imp_res_list.append(dict(
+                        title_text="Launch-able file type(s) found. There may be a malicious intent.",
+                        heur_id=2,
+                        tags=[("file.behavior", "Launch-able file in JAR")],
+                        files = self.launchable_files,
+                        score_condition=APPLET_MZ,
+                    ))
+
+
+                res = ResultSection("Analysis of the JAR file")
                 res_meta = ResultSection("[Meta Information]")
                 if len(self.manifest_tags) > 0:
                     res_manifest = ResultSection("Manifest File Information Extract", parent=res_meta)
@@ -492,6 +519,7 @@ class Espresso(ServiceBase):
                     ResultSection(
                         "URL Found", body=f"java/net/URL: {self.url_found}", heuristic=Heuristic(9), parent=res_class
                     )
+
 
                 if res_class.subsections:
                     res.add_subsection(res_class)
@@ -567,6 +595,7 @@ class Espresso(ServiceBase):
     def heuristic_alteration(self, score_condition, heur_id):
         if score_condition is None:
             return heur_id
+
         if score_condition == APPLET_MZ:
             if self.applet_found > 0:
                 return heur_id
