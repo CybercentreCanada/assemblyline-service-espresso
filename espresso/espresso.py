@@ -177,8 +177,7 @@ class Espresso(ServiceBase):
         supplementary file.
 
         :param certs: the keytool -printcert string representation of a certificate/certificate chain
-        :param cur_file: the file path of the certificate (to be used in supplementary_files)
-        :param output_files: the files of interest out of this function (to be stored in supplementary or extracted)
+        :param cur_file: the file path of the certificate
         :return:
         """
         certs = certificate_chain_from_printcert(certs)
@@ -240,7 +239,6 @@ class Espresso(ServiceBase):
         For now it analyzes the manifest file and the certificate(s)
 
         :param meta_dir: the path of the META-INF folder
-        :param supplementary_files: the service's supplementary files
         :return:
         """
         # iterate over all files in META-INF folder
@@ -502,7 +500,7 @@ class Espresso(ServiceBase):
         if root_analysis_result.subsections:
             result_list.append(root_analysis_result)
 
-        # First stored important files with PE or launchable file in extracted file
+        # attach result section to relevant files. Get interesting files to add to extracted
         important_output_files = self.recurse_add_result(request.result, important_result_list)
 
         for desc, file in important_output_files:
