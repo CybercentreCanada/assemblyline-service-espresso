@@ -5,24 +5,11 @@
     "sections": [
       {
         "auto_collapse": false,
-        "body": "All suspicious class files were saved as supplementary files.",
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 0,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
-        "title_text": "Analysis of the JAR file",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
         "body": null,
         "body_config": {},
         "body_format": "TEXT",
         "classification": "TLP:C",
-        "depth": 1,
+        "depth": 0,
         "heuristic": null,
         "promote_to": null,
         "tags": {},
@@ -35,7 +22,7 @@
         "body_config": {},
         "body_format": "TEXT",
         "classification": "TLP:C",
-        "depth": 2,
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {
@@ -56,7 +43,7 @@
         "body_config": {},
         "body_format": "MEMORY_DUMP",
         "classification": "TLP:C",
-        "depth": 2,
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {
@@ -86,7 +73,7 @@
         "body_config": {},
         "body_format": "TEXT",
         "classification": "TLP:C",
-        "depth": 3,
+        "depth": 2,
         "heuristic": {
           "attack_ids": [],
           "frequency": 1,
@@ -106,7 +93,7 @@
         "body_config": {},
         "body_format": "MEMORY_DUMP",
         "classification": "TLP:C",
-        "depth": 2,
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {
@@ -136,7 +123,7 @@
         "body_config": {},
         "body_format": "MEMORY_DUMP",
         "classification": "TLP:C",
-        "depth": 2,
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {
@@ -158,6 +145,19 @@
           }
         },
         "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "[Suspicious classes]",
         "zeroize_on_tag_safe": false
       },
       {

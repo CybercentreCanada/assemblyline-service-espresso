@@ -27,7 +27,6 @@ class FileResult():
     interesting_class_attributes: ClassAttributes
     header_hex: str
     extracted_class_file: Tuple
-    empty_file: bool
 
     @staticmethod
     def empty_file_result(file_path):
@@ -38,5 +37,4 @@ class FileResult():
             interesting_class_attributes=ClassAttributes.empty_class_attributes(),
             header_hex="",
             extracted_class_file=(None, None, None),
-            empty_file=False,
         )

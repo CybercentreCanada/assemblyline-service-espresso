@@ -13,6 +13,82 @@
         "heuristic": null,
         "promote_to": null,
         "tags": {},
+        "title_text": "[Meta Information]",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Manifest File Information Extract",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": "Owner: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nIssuer: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nSerial number: 53be0d7c\nValid from: Thu Jan 06 22:14:27 UTC 2022 until: Wed Apr 06 22:14:27 UTC 2022\nCertificate fingerprints:\n\t SHA1: 32:D1:42:D2:22:D0:A1:8C:9D:19:D5:B8:89:17:C7:47:7A:F1:CD:28\n\t SHA256: 03:3E:BA:44:19:96:4C:40:D1:E4:BF:0B:A9:0B:D4:FE:8A:6C:17:B9:64:AD:67:13:9C:1D:98:6C:70:CA:1F:88\nSignature algorithm name: SHA256withRSA\nSubject Public Key Algorithm: 2048-bit RSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: 15 84 6F 04 5F 1D 22 2D   10 C4 DE B7 E7 E7 3B DF  ..o._.\"-......;.\n0010: 04 2A 3B B3                                        .*;.\n]\n]",
+        "body_config": {},
+        "body_format": "MEMORY_DUMP",
+        "classification": "TLP:C",
+        "depth": 1,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {
+          "cert": {
+            "issuer": [
+              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+            ],
+            "owner": [
+              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
+            ],
+            "valid": {
+              "end": [
+                "Wed Apr 06 22:14:27 UTC 2022"
+              ],
+              "start": [
+                "Thu Jan 06 22:14:27 UTC 2022"
+              ]
+            }
+          }
+        },
+        "title_text": "Certificate Analysis",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 2,
+        "heuristic": {
+          "attack_ids": [],
+          "frequency": 1,
+          "heur_id": 11,
+          "score": 1,
+          "score_map": {},
+          "signatures": {}
+        },
+        "promote_to": null,
+        "tags": {},
+        "title_text": "Certificate is self-signed",
+        "zeroize_on_tag_safe": false
+      },
+      {
+        "auto_collapse": false,
+        "body": null,
+        "body_config": {},
+        "body_format": "TEXT",
+        "classification": "TLP:C",
+        "depth": 0,
+        "heuristic": null,
+        "promote_to": null,
+        "tags": {},
         "title_text": "[Suspicious classes]",
         "zeroize_on_tag_safe": false
       },
@@ -74,95 +150,6 @@
         "promote_to": null,
         "tags": {},
         "title_text": "Security Found",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": "All suspicious class files were saved as supplementary files.",
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 0,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
-        "title_text": "Analysis of the JAR file",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": null,
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 1,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
-        "title_text": "[Meta Information]",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": null,
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 2,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
-        "title_text": "Manifest File Information Extract",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": "Owner: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nIssuer: CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB\nSerial number: 53be0d7c\nValid from: Thu Jan 06 22:14:27 UTC 2022 until: Wed Apr 06 22:14:27 UTC 2022\nCertificate fingerprints:\n\t SHA1: 32:D1:42:D2:22:D0:A1:8C:9D:19:D5:B8:89:17:C7:47:7A:F1:CD:28\n\t SHA256: 03:3E:BA:44:19:96:4C:40:D1:E4:BF:0B:A9:0B:D4:FE:8A:6C:17:B9:64:AD:67:13:9C:1D:98:6C:70:CA:1F:88\nSignature algorithm name: SHA256withRSA\nSubject Public Key Algorithm: 2048-bit RSA key\nVersion: 3\n\nExtensions: \n\n#1: ObjectId: 2.5.29.14 Criticality=false\nSubjectKeyIdentifier [\nKeyIdentifier [\n0000: 15 84 6F 04 5F 1D 22 2D   10 C4 DE B7 E7 E7 3B DF  ..o._.\"-......;.\n0010: 04 2A 3B B3                                        .*;.\n]\n]",
-        "body_config": {},
-        "body_format": "MEMORY_DUMP",
-        "classification": "TLP:C",
-        "depth": 2,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {
-          "cert": {
-            "issuer": [
-              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
-            ],
-            "owner": [
-              "CN=Thomas W, OU=TFM, O=TFM, L=Manchester, ST=Greater Manchester, C=GB"
-            ],
-            "valid": {
-              "end": [
-                "Wed Apr 06 22:14:27 UTC 2022"
-              ],
-              "start": [
-                "Thu Jan 06 22:14:27 UTC 2022"
-              ]
-            }
-          }
-        },
-        "title_text": "Certificate Analysis",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": null,
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 3,
-        "heuristic": {
-          "attack_ids": [],
-          "frequency": 1,
-          "heur_id": 11,
-          "score": 1,
-          "score_map": {},
-          "signatures": {}
-        },
-        "promote_to": null,
-        "tags": {},
-        "title_text": "Certificate is self-signed",
         "zeroize_on_tag_safe": false
       },
       {

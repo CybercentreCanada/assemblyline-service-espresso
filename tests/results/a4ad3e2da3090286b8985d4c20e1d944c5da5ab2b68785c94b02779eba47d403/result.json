@@ -39,19 +39,6 @@
         "heuristic": null,
         "promote_to": null,
         "tags": {},
-        "title_text": "Analysis of the JAR file",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
-        "body": null,
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:C",
-        "depth": 1,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
         "title_text": "[Meta Information]",
         "zeroize_on_tag_safe": false
       },
@@ -61,7 +48,7 @@
         "body_config": {},
         "body_format": "TEXT",
         "classification": "TLP:C",
-        "depth": 2,
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {},
@@ -77,99 +64,7 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "1.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "10.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "11.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "12.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "13.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "14.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "15.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "16.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "17.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
         "name": "18.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "19.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "2.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "20.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "21.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "22.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "23.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "24.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "25.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "26.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "27.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "28.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "29.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "3.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "30.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -177,31 +72,63 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
+        "name": "28.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "56.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "25.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "44.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "26.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "16.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "15.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
         "name": "32.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "33.temp",
+        "name": "10.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "34.temp",
+        "name": "42.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "35.temp",
+        "name": "30.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "36.temp",
+        "name": "27.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "37.temp",
+        "name": "29.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "38.temp",
+        "name": "55.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "12.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -213,7 +140,7 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "40.temp",
+        "name": "21.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -221,19 +148,27 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "42.temp",
+        "name": "36.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "43.temp",
+        "name": "38.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "44.temp",
+        "name": "24.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "45.temp",
+        "name": "14.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "19.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "9.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -241,19 +176,19 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "47.temp",
+        "name": "22.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "48.temp",
+        "name": "45.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "49.temp",
+        "name": "3.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "5.temp",
+        "name": "33.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -261,31 +196,23 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "51.temp",
+        "name": "48.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "52.temp",
+        "name": "37.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "53.temp",
+        "name": "23.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "54.temp",
+        "name": "43.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "55.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "56.temp",
-        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
-      },
-      {
-        "name": "57.temp",
+        "name": "17.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
@@ -297,11 +224,71 @@
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
+        "name": "13.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "54.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "20.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "11.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
         "name": "8.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       },
       {
-        "name": "9.temp",
+        "name": "1.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "51.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "52.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "35.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "2.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "5.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "47.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "57.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "34.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "40.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "53.temp",
+        "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
+      },
+      {
+        "name": "49.temp",
         "sha256": "0ad1892a915fd08d77e4a2bc6973228a36a8085d6ce3db8dbfd373758ff13023"
       }
     ],

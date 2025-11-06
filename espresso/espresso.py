@@ -276,7 +276,10 @@ class Espresso(ServiceBase):
                 stdout = keytool_printcert(cur_file)
 
                 if stdout:  # if stdout isn't None then the file must have been a certificate
-                    certs, output_files = self.validate_certs(stdout, cur_file)
+                    val_certs, val_output_files = self.validate_certs(stdout, cur_file)
+
+                    certs.extend(val_certs)
+                    output_files.extend(val_output_files)
 
         return manifest_tags, certs, output_files
 
@@ -438,7 +441,6 @@ class Espresso(ServiceBase):
                 )
             )
 
-        root_analysis_result = ResultSection("Analysis of the JAR file")
         res_meta = ResultSection("[Meta Information]")
 
         if manifest_tags:
@@ -450,10 +452,8 @@ class Espresso(ServiceBase):
             res_meta.add_subsection(res_cert)
 
         if res_meta.subsections:
-            root_analysis_result.add_subsection(res_meta)
+            result_list.append(res_meta)
 
-        if runtime_found > 0 or applet_found > 0 or classloader_found > 0 or security_found > 0 or url_found > 0:
-            root_analysis_result.add_line("All suspicious class files were saved as supplementary files.")
 
         res_class = ResultSection("[Suspicious classes]")
 
@@ -490,15 +490,10 @@ class Espresso(ServiceBase):
             )
 
         if url_found > 0:
-            ResultSection(
-                "URL Found", body=f"java/net/URL: {url_found}", heuristic=Heuristic(9), parent=root_analysis_result
-            )
+            ResultSection("URL Found", body=f"java/net/URL: {url_found}", heuristic=Heuristic(9), parent=res_class)
 
         if res_class.subsections:
             result_list.append(res_class)
-
-        if root_analysis_result.subsections:
-            result_list.append(root_analysis_result)
 
         # attach result section to relevant files. Get interesting files to add to extracted
         important_output_files = self.recurse_add_result(request.result, important_result_list)
@@ -514,7 +509,7 @@ class Espresso(ServiceBase):
         # put as many decompiled class file in extracted as possible and leave the rest in supplementary
         max_extracted = (request.task.max_extracted - len(important_output_files)) - 1
         sorted_class_files = sorted(list(set(extracted_class_files)))
-        max_class_extracted = 0 if max_extracted < 0 else len(sorted_class_files)
+        max_class_extracted = 0 if max_extracted < 0 else min(len(sorted_class_files), max_extracted)
 
         for path, name, desc in sorted_class_files[:max_class_extracted]:
             request.add_extracted(path, name, desc, safelist_interface=self.api_interface)
