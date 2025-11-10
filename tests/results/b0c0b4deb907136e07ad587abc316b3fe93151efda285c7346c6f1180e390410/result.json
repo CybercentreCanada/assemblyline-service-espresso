@@ -5,24 +5,11 @@
     "sections": [
       {
         "auto_collapse": false,
-        "body": "All suspicious class files were saved as supplementary files.",
-        "body_config": {},
-        "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 0,
-        "heuristic": null,
-        "promote_to": null,
-        "tags": {},
-        "title_text": "Analysis of the JAR file",
-        "zeroize_on_tag_safe": false
-      },
-      {
-        "auto_collapse": false,
         "body": null,
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 1,
+        "classification": "TLP:C",
+        "depth": 0,
         "heuristic": null,
         "promote_to": null,
         "tags": {},
@@ -34,8 +21,8 @@
         "body": null,
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 2,
+        "classification": "TLP:C",
+        "depth": 1,
         "heuristic": null,
         "promote_to": null,
         "tags": {
@@ -187,8 +174,8 @@
         "body": null,
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 1,
+        "classification": "TLP:C",
+        "depth": 0,
         "heuristic": null,
         "promote_to": null,
         "tags": {},
@@ -200,8 +187,8 @@
         "body": "java/lang/Runtime: 23",
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 2,
+        "classification": "TLP:C",
+        "depth": 1,
         "heuristic": {
           "attack_ids": [],
           "frequency": 1,
@@ -220,8 +207,8 @@
         "body": "java/lang/ClassLoader: 43",
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 2,
+        "classification": "TLP:C",
+        "depth": 1,
         "heuristic": {
           "attack_ids": [],
           "frequency": 1,
@@ -240,8 +227,8 @@
         "body": "java/security/*: 25",
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 2,
+        "classification": "TLP:C",
+        "depth": 1,
         "heuristic": {
           "attack_ids": [],
           "frequency": 1,
@@ -260,8 +247,8 @@
         "body": "java/net/URL: 42",
         "body_config": {},
         "body_format": "TEXT",
-        "classification": "TLP:CLEAR",
-        "depth": 2,
+        "classification": "TLP:C",
+        "depth": 1,
         "heuristic": {
           "attack_ids": [],
           "frequency": 1,
@@ -278,8 +265,7 @@
     ]
   },
   "files": {
-    "extracted": [],
-    "supplementary": [
+    "extracted": [
       {
         "name": "com/opensymphony/xwork2/util/StrutsLocalizedTextProvider.java",
         "sha256": "02525ad24d34a0ac6ce6a4927fe701184be192e99b1b5e4ab83d8a7119f4511a"
@@ -684,7 +670,8 @@
         "name": "com/opensymphony/xwork2/interceptor/ParametersInterceptor.java",
         "sha256": "fcee3b68fd0696b350ce2865a7e3848900b297faab7a6ca0619c5a1cf8e16a7d"
       }
-    ]
+    ],
+    "supplementary": []
   },
   "results": {
     "heuristics": [

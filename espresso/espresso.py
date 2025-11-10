@@ -2,6 +2,7 @@ import hashlib
 import logging
 import os
 import zipfile
+import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 from subprocess import PIPE, Popen
 
@@ -12,6 +13,7 @@ from assemblyline_service_utilities.common.keytool_parse import certificate_chai
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import BODY_FORMAT, Heuristic, Result, ResultSection
 from assemblyline_v4_service.common.utils import set_death_signal
+from .file_result import FileResult, ClassAttributes
 from javatools.manifest import Manifest
 
 G_LAUNCHABLE_EXTENSIONS = [
@@ -24,8 +26,6 @@ G_LAUNCHABLE_EXTENSIONS = [
     "SCR",  # Windows screensaver
 ]
 
-APPLET = "applet"
-APPLET_MZ = "mz_in_applet"
 
 Classification = forge.get_classification()
 
@@ -39,16 +39,6 @@ class Espresso(ServiceBase):
     def __init__(self, config=None):
         super(Espresso, self).__init__(config)
         self.cfr = "/opt/al/support/espresso/cfr.jar"
-        self.applet_found = 0
-        self.classloader_found = 0
-        self.security_found = 0
-        self.url_found = 0
-        self.runtime_found = 0
-        self.manifest_tags = None
-        self.signature_block_certs = None
-        self.num_unique_headers = {}
-        self.embedded_pes = []
-        self.launchable_files = []
 
     @staticmethod
     def get_tool_version(**_):
@@ -115,11 +105,10 @@ class Espresso(ServiceBase):
         except (IOError, zipfile.BadZipfile):
             self.log.info(f"Not a ZIP File or Corrupt ZIP File: {filename}")
             return False
+        except NotJARException:
+            self.log.info(f"Not a JAR File: {filename}")
+            raise NotJARException
         except Exception as e:
-            if type(e) == NotJARException:
-                self.log.info(f"Not a JAR File: {filename}")
-                raise
-
             self.log.exception(f"Caught an exception while analysing the file {filename}. [{e}]")
             return False
         finally:
@@ -146,7 +135,7 @@ class Espresso(ServiceBase):
             else:
                 return None
 
-    def decompile_class(self, path_to_file, new_files, decompiled_dir, extract_dir):
+    def decompile_class_file(self, path_to_file, decompiled_dir, extract_dir):
         # Decompile file
         decompiled = self.decompile_to_str(path_to_file)
 
@@ -158,12 +147,11 @@ class Espresso(ServiceBase):
                 java_handle.write(decompiled)
                 java_handle.close()
 
-            txt = f"Decompiled {path_to_file.replace(extract_dir + '/', '').replace(decompiled_dir + '/', '')}"
+            desc = f"Decompiled {path_to_file.replace(extract_dir + '/', '').replace(decompiled_dir + '/', '')}"
             name = decompiled_path.replace(extract_dir + "/", "").replace(decompiled_dir + "/", "")
-            new_files.append((decompiled_path, name, txt))
-            return len(decompiled), hashlib.sha1(decompiled).hexdigest(), os.path.basename(decompiled_path)
+            return decompiled_path, name, desc
         else:
-            return 0, "", ""
+            return None, None, None
 
     @staticmethod
     def find_decompiled_file(class_file):
@@ -173,74 +161,28 @@ class Espresso(ServiceBase):
         return None
 
     def do_class_analysis(self, data):
-        has_interesting_attributes = False
-        if b"java/applet/Applet" in data:
-            self.applet_found += 1
-            has_interesting_attributes = True
+        interesting_attributes = ClassAttributes.empty_class_attributes()
+        interesting_attributes.applet_found = b"java/applet/Applet" in data
+        interesting_attributes.classloader_found = b"ClassLoader" in data
+        interesting_attributes.security_found = b"/security/" in data
+        interesting_attributes.url_found = b"net/URL" in data
+        interesting_attributes.runtime_found = b"java/lang/Runtime" in data
 
-        if b"ClassLoader" in data:
-            self.classloader_found += 1
-            has_interesting_attributes = True
+        return interesting_attributes
 
-        if b"/security/" in data:
-            self.security_found += 1
-            has_interesting_attributes = True
-
-        if b"net/URL" in data:
-            self.url_found += 1
-            has_interesting_attributes = True
-
-        if b"java/lang/Runtime" in data:
-            self.runtime_found += 1
-            has_interesting_attributes = True
-
-        return has_interesting_attributes
-
-    # noinspection PyUnusedLocal
-    def analyse_class_file(
-        self,
-        file_res,
-        cf,
-        cur_file,
-        cur_file_path,
-        start_bytes,
-        imp_res_list,
-        supplementary_files,
-        decompiled_dir,
-        extract_dir
-    ):
-        if start_bytes[:4] == b"\xCA\xFE\xBA\xBE":
-            cur_file.seek(0)
-            cur_file_full_data = cur_file.read()
-
-            # Analyse file for suspicious functions
-            if self.do_class_analysis(cur_file_full_data):
-                self.decompile_class(cur_file_path, supplementary_files, decompiled_dir, extract_dir)
-
-        else:
-            # Could not deobfuscate
-            cur_file.seek(0)
-            first_256 = cur_file.read(256)
-            hex_first_256 = hexdump(first_256)
-
-            if hex_first_256 in self.num_unique_headers:
-                self.num_unique_headers[hex_first_256].append(cur_file_path)
-            else:
-                self.num_unique_headers[hex_first_256] = [cur_file_path]
-
-
-    def validate_certs(self, certs, cur_file, supplementary_files):
+    def validate_certs(self, certs, cur_file):
         """
         This method tags out of a certificate or certificate chain. The start and
         end date, issuer, and owner are all pulled. The certificate itself is included as a
         supplementary file.
 
         :param certs: the keytool -printcert string representation of a certificate/certificate chain
-        :param cur_file: the file path of the certificate (to be used in supplementary_files)
-        :param supplementary_files: the services supplementary files
+        :param cur_file: the file path of the certificate
         :return:
         """
         certs = certificate_chain_from_printcert(certs)
+        signature_block_certs = []
+        output_files = []
 
         for cert in certs:
             res_cert = ResultSection(
@@ -282,24 +224,28 @@ class Espresso(ServiceBase):
                 if len(cert.country) != 2 or is_int_country:
                     ResultSection("Invalid country code in certificate owner", parent=res_cert, heuristic=Heuristic(14))
 
-            self.signature_block_certs.append(res_cert)
+            signature_block_certs.append(res_cert)
 
             if len(res_cert.subsections) > 0:
                 name = os.path.basename(cur_file)
                 desc = f"JAR Signature Block: {name}"
-                supplementary_files.append((cur_file.decode("utf-8"), name.decode("utf-8"), desc))
+                output_files.append((cur_file.decode("utf-8"), name.decode("utf-8"), desc))
 
-    def analyse_meta_information(self, meta_dir, supplementary_files):
+        return signature_block_certs, output_files
+
+    def analyse_meta_information(self, meta_dir):
         """
         this function pulls the meta information out of the META-INF folder.
         For now it analyzes the manifest file and the certificate(s)
 
         :param meta_dir: the path of the META-INF folder
-        :param supplementary_files: the service's supplementary files
         :return:
         """
         # iterate over all files in META-INF folder
         mf = Manifest()
+        manifest_tags = []
+        certs = []
+        output_files = []
         for filename in os.listdir(meta_dir):
             cur_file = os.path.join(meta_dir, filename)
             if cur_file.upper().endswith(b"MANIFEST.MF"):  # handle jar manifest
@@ -311,10 +257,10 @@ class Espresso(ServiceBase):
                 if mf.get("Main-Class"):
                     main = tuple(mf["Main-Class"].rsplit(".", 1))
                     if len(main) == 2:
-                        self.manifest_tags.append(("file.jar.main_class", main[1]))
-                        self.manifest_tags.append(("file.jar.main_package", main[0]))
+                        manifest_tags.append(("file.jar.main_class", main[1]))
+                        manifest_tags.append(("file.jar.main_package", main[0]))
                     elif len(main) == 1:
-                        self.manifest_tags.append(("file.jar.main_class", main[0]))
+                        manifest_tags.append(("file.jar.main_class", main[0]))
 
                 # Extract information about the packages imported
                 for package_str in mf.get("Import-Package", "").split(","):
@@ -324,12 +270,18 @@ class Espresso(ServiceBase):
                         # There's a version associated to package, overwrite value before tagging
                         data = package_str.replace(";version", "=").replace('"', "")
 
-                    self.manifest_tags.append(("file.jar.imported_package", data))
+                    manifest_tags.append(("file.jar.imported_package", data))
 
             else:
                 stdout = keytool_printcert(cur_file)
+
                 if stdout:  # if stdout isn't None then the file must have been a certificate
-                    self.validate_certs(stdout, cur_file, supplementary_files)
+                    val_certs, val_output_files = self.validate_certs(stdout, cur_file)
+
+                    certs.extend(val_certs)
+                    output_files.extend(val_output_files)
+
+        return manifest_tags, certs, output_files
 
     def decompile_jar(self, path_to_file, target_dir):
         cfr = Popen(
@@ -347,257 +299,264 @@ class Espresso(ServiceBase):
         filename = os.path.basename(temp_filename)
         extract_dir = os.path.join(self.working_directory, f"{filename}_extracted")
         decompiled_dir = os.path.join(self.working_directory, f"{filename}_decompiled")
-        file_res = request.result
-        new_files = []
+
+        result_list = []
+        extracted_class_files = []
         supplementary_files = []
-        imp_res_list = []
-        res_list = []
+        important_result_list = []
 
-        if request.file_type == "java/jar":
-            self.decompile_jar(temp_filename, decompiled_dir)
-            if self.jar_extract(temp_filename, extract_dir):
-                # Analysis properties
-                self.classloader_found = 0
-                self.security_found = 0
-                self.url_found = 0
-                self.runtime_found = 0
-                self.applet_found = 0
+        # Analysis properties
+        classloader_found = 0
+        security_found = 0
+        url_found = 0
+        runtime_found = 0
+        applet_found = 0
 
-                self.manifest_tags = []
-                self.signature_block_certs = []
+        manifest_tags = []
+        signature_block_certs = []
+        unique_headers_and_files = {}
+        embedded_pes = []
+        launchable_files = []
 
-                self.num_unique_headers = {}
-                self.embedded_pes = []
-                self.launchable_files = []
+        # decompile java/jar to the decompiled_dir
+        self.decompile_jar(temp_filename, decompiled_dir)
+        # extract files in jar
+        self.jar_extract(temp_filename, extract_dir)
 
-                def analyze_file(root, cf, file_res, imp_res_list, supplementary_files, decompiled_dir, extract_dir):
-                    cur_file_path = os.path.join(root.decode("utf-8"), cf.decode("utf-8"))
-                    with open(cur_file_path, "rb") as cur_file:
-                        start_bytes = cur_file.read(24)
+        # task for analyzing each file
+        def analyze_file(root_dir, current_file):
+            cur_file_path = os.path.join(root_dir.decode("utf-8"), current_file.decode("utf-8"))
 
-                        ##############################
-                        # Executables in JAR
-                        ##############################
-                        cur_ext = os.path.splitext(cf)[1][1:].upper()
-                        if start_bytes[:2] == b"MZ":
-                            self.embedded_pes.append(cur_file_path)
-                        ##############################
-                        # Launchable in JAR
-                        ##############################
-                        elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
-                            self.launchable_files.append(cur_file_path)
+            file_result = FileResult.empty_file_result(cur_file_path)
 
-                        if cur_file_path.upper().endswith(".CLASS"):
-                            self.analyse_class_file(
-                                file_res,
-                                cf,
-                                cur_file,
-                                cur_file_path,
-                                start_bytes,
-                                imp_res_list,
-                                supplementary_files,
-                                decompiled_dir,
-                                extract_dir
-                            )
+            with open(cur_file_path, "rb") as cur_file:
+                start_bytes = cur_file.read(256)
 
+                ##############################
+                # Executables in JAR
+                ##############################
+                cur_ext = os.path.splitext(current_file)[1][1:].upper()
+                if start_bytes[:2] == b"MZ":
+                    file_result.embedded_pes = True
+                ##############################
+                # Launchable in JAR
+                ##############################
+                elif cur_ext in G_LAUNCHABLE_EXTENSIONS:
+                    file_result.launchable_file = True
 
-                for root, _, files in os.walk(extract_dir.encode("utf-8")):
-                    logging.info(f"Extracted: {root} - {files}")
+                ##############################
+                # analyze CLASS file
+                ##############################
+                if cur_file_path.upper().endswith(".CLASS"):
+                    # analyze class file
+                    if start_bytes[:4] == b"\xca\xfe\xba\xbe":
+                        cur_file.seek(0)
 
-                    # if the META-INF folder is encountered
-                    if root.upper().endswith(b"META-INF"):  # only top level meta
-                        self.analyse_meta_information(root, supplementary_files)
-                        continue
+                        cur_file_full_data = cur_file.read()
 
-                    with ThreadPoolExecutor() as executor:
-                        for cf in files:
-                            executor.submit(
-                                analyze_file,
-                                root,
-                                cf,
-                                file_res,
-                                imp_res_list,
-                                supplementary_files,
-                                decompiled_dir,
-                                extract_dir,
-                            )
+                        # Analyse file for suspicious functions
+                        file_result.interesting_class_attributes = self.do_class_analysis(cur_file_full_data)
+                        if file_result.interesting_class_attributes.is_interesting():
+                            path, name, desc = self.decompile_class_file(cur_file_path, decompiled_dir, extract_dir)
+                            if path:
+                                file_result.extracted_class_file = (path, name, desc)
 
+                    else:
+                        # Could not deobfuscate
+                        # store the first 265 byte of file data to identify unique files
+                        file_result.header_hex = hexdump(start_bytes)
 
+            return file_result
 
+        # Walk through each file and analyze them separately
+        for root_dir, _, files in os.walk(extract_dir.encode("utf-8")):
+            logging.info(f"Extracted: {root_dir} - {files}")
+            # if the META-INF folder is encountered
+            if root_dir.upper().endswith(b"META-INF"):  # only top level meta
+                mani_tags, certs, output_files = self.analyse_meta_information(root_dir)
+                supplementary_files.extend(output_files)
+                manifest_tags.extend(mani_tags)
+                signature_block_certs.extend(certs)
+                continue
+            # analyze each file using a thread pool
+            with ThreadPoolExecutor() as executor:
+                file_futures = [executor.submit(analyze_file, root_dir, cur_file) for cur_file in files]
 
-                # if irregular header byte exist, create result section for each unique header
-                for hex_256 in self.num_unique_headers.keys():
-                    ob_res = dict(
-                        title_text=f"Java class file(s) doesn't have the normal class files magic bytes. "
-                        "The file was re-submitted for analysis. Here are the first 256 bytes:",
-                        body=hex_256,
-                        body_format=BODY_FORMAT.MEMORY_DUMP,
-                        heur_id=3,
-                        tags=[("file.behavior", "Suspicious Java Class")],
-                        files=self.num_unique_headers[hex_256],
-                    )
+                for future in concurrent.futures.as_completed(file_futures):
+                    file_result = future.result()
 
-                    imp_res_list.append(ob_res)
+                    classloader_found += int(file_result.interesting_class_attributes.classloader_found)
+                    security_found += int(file_result.interesting_class_attributes.security_found)
+                    url_found += int(file_result.interesting_class_attributes.url_found)
+                    runtime_found += int(file_result.interesting_class_attributes.runtime_found)
+                    applet_found += int(file_result.interesting_class_attributes.applet_found)
 
-                # compile embeded files into a single heuristic
-                if len(self.embedded_pes) > 1:
-                    imp_res_list.append(dict(
-                        title_text="Embedded executable files found. There may be a malicious intent.",
-                        heur_id=1,
-                        tags=[("file.behavior", "Embedded PE")],
-                        files = self.embedded_pes,
-                        score_condition=APPLET_MZ,
-                    ))
+                    if file_result.header_hex:
+                        unique_header_files = unique_headers_and_files.get(file_result.header_hex, list())
+                        unique_header_files.append(file_result.file_path)
+                        unique_headers_and_files[file_result.header_hex] = unique_header_files
 
-                if len(self.launchable_files) > 1:
-                    imp_res_list.append(dict(
-                        title_text="Launch-able file type(s) found. There may be a malicious intent.",
-                        heur_id=2,
-                        tags=[("file.behavior", "Launch-able file in JAR")],
-                        files = self.launchable_files,
-                        score_condition=APPLET_MZ,
-                    ))
+                    if file_result.embedded_pes:
+                        embedded_pes.append(file_result.file_path)
+                    if file_result.launchable_file:
+                        launchable_files.append(file_result.file_path)
 
+                    if file_result.extracted_class_file[0]:
+                        extracted_class_files.append(file_result.extracted_class_file)
 
-                res = ResultSection("Analysis of the JAR file")
-                res_meta = ResultSection("[Meta Information]")
-                if len(self.manifest_tags) > 0:
-                    res_manifest = ResultSection("Manifest File Information Extract", parent=res_meta)
-                    for tag, val in self.manifest_tags:
-                        res_manifest.add_tag(tag, val)
+        # if irregular header byte exist, create result section for each unique header
+        for hex_256 in unique_headers_and_files.keys():
+            ob_res = dict(
+                title_text="Java class file(s) doesn't have the normal class files magic bytes. "
+                "The file was re-submitted for analysis. Here are the first 256 bytes:",
+                body=hex_256,
+                body_format=BODY_FORMAT.MEMORY_DUMP,
+                heur_id=Heuristic(3),
+                tags=[("file.behavior", "Suspicious Java Class")],
+                files=unique_headers_and_files[hex_256],
+            )
 
-                for res_cert in self.signature_block_certs:
-                    res_meta.add_subsection(res_cert)
+            important_result_list.append(ob_res)
 
-                if res_meta.subsections:
-                    res.add_subsection(res_meta)
-
-                if (
-                    self.runtime_found > 0
-                    or self.applet_found > 0
-                    or self.classloader_found > 0
-                    or self.security_found > 0
-                    or self.url_found > 0
-                ):
-                    res.add_line("All suspicious class files were saved as supplementary files.")
-
-                res_class = ResultSection("[Suspicious classes]")
-
-                if self.runtime_found > 0:
-                    ResultSection(
-                        "Runtime Found",
-                        body=f"java/lang/Runtime: {self.runtime_found}",
-                        heuristic=Heuristic(10),
-                        parent=res_class,
-                    )
-
-                if self.applet_found > 0:
-                    ResultSection(
-                        "Applet Found",
-                        body=f"java/applet/Applet: {self.applet_found}",
-                        heuristic=Heuristic(6),
-                        parent=res_class,
-                    )
-
-                if self.classloader_found > 0:
-                    ResultSection(
-                        "Classloader Found",
-                        body=f"java/lang/ClassLoader: {self.classloader_found}",
-                        heuristic=Heuristic(7),
-                        parent=res_class,
-                    )
-
-                if self.security_found > 0:
-                    ResultSection(
-                        "Security Found",
-                        body=f"java/security/*: {self.security_found}",
-                        heuristic=Heuristic(8),
-                        parent=res_class,
-                    )
-
-                if self.url_found > 0:
-                    ResultSection(
-                        "URL Found", body=f"java/net/URL: {self.url_found}", heuristic=Heuristic(9), parent=res_class
-                    )
-
-
-                if res_class.subsections:
-                    res.add_subsection(res_class)
-
-                if res.subsections:
-                    res_list.append(res)
-
-        # Add results if any
-        self.recurse_add_res(file_res, imp_res_list, new_files)
-        for res in res_list:
-            file_res.add_section(res)
-
-        # Submit embedded files
-        if len(new_files) > 0:
-            new_files = sorted(list(set(new_files)))
-            txt = f"Extracted from 'JAR' file {filename}"
-            for embed in new_files:
-                request.add_extracted(
-                    embed,
-                    embed.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
-                    txt,
-                    safelist_interface=self.api_interface,
+        # compile embedded files into a single heuristic
+        if embedded_pes:
+            important_result_list.append(
+                dict(
+                    title_text="Embedded executable files found. There may be a malicious intent.",
+                    heur_id=(Heuristic(1) if applet_found > 0 else Heuristic(2)),
+                    tags=[("file.behavior", "Embedded PE")],
+                    files=embedded_pes,
+                    file_desc="Embedded executable file. ",
                 )
+            )
 
-        if len(supplementary_files) > 0:
-            supplementary_files = sorted(list(set(supplementary_files)))
-            for path, name, desc in supplementary_files:
-                request.add_supplementary(path, name, desc)
-
-    def recurse_add_res(self, file_res, res_list, new_files, parent=None):
-        for res_dic in res_list:
-            # Check if condition is OK
-            if self.pass_condition(res_dic.get("condition", None)):
-                res = ResultSection(
-                    res_dic["title_text"],
-                    classification=res_dic.get("classification", Classification.UNRESTRICTED),
-                    parent=parent,
-                    body_format=res_dic.get("body_format", BODY_FORMAT.TEXT),
+        if launchable_files:
+            important_result_list.append(
+                dict(
+                    title_text="Launch-able file type(s) found. There may be a malicious intent.",
+                    heur_id=(Heuristic(3) if applet_found > 0 else Heuristic(4)),
+                    tags=[("file.behavior", "Launch-able file in JAR")],
+                    file_desc="Launchable file. ",
+                    files=launchable_files,
                 )
-                heur_id = self.heuristic_alteration(res_dic.get("score_condition", None), res_dic["heur_id"])
-                res.set_heuristic(heur_id)
+            )
 
-                # Add Tags
-                tags = res_dic.get("tags", [])
-                for res_tag in tags:
-                    res.add_tag(res_tag[0], res_tag[1])
+        res_meta = ResultSection("[Meta Information]")
 
-                # Add body
-                body = res_dic.get("body", None)
-                if body:
-                    res.set_body(body)
+        if manifest_tags:
+            res_manifest = ResultSection("Manifest File Information Extract", parent=res_meta)
+            for tag, val in manifest_tags:
+                res_manifest.add_tag(tag, val)
 
-                # File for resubmit
-                files = res_dic.get("files", [])
-                for res_file in files:
-                    if isinstance(res_file, tuple):
-                        res_file = res_file[1]
-                    new_files.append(res_file)
+        for res_cert in signature_block_certs:
+            res_meta.add_subsection(res_cert)
 
-                # Add to file res if root result
-                if parent is None:
-                    file_res.add_section(res)
+        if res_meta.subsections:
+            result_list.append(res_meta)
 
-    def pass_condition(self, condition):
-        if condition is None:
-            return True
-        if condition == APPLET:
-            if self.applet_found > 0:
-                return True
 
-        return False
+        res_class = ResultSection("[Suspicious classes]")
 
-    def heuristic_alteration(self, score_condition, heur_id):
-        if score_condition is None:
-            return heur_id
+        if runtime_found > 0:
+            ResultSection(
+                "Runtime Found",
+                body=f"java/lang/Runtime: {runtime_found}",
+                heuristic=Heuristic(10),
+                parent=res_class,
+            )
 
-        if score_condition == APPLET_MZ:
-            if self.applet_found > 0:
-                return heur_id
-            else:
-                return heur_id + 1
+        if applet_found > 0:
+            ResultSection(
+                "Applet Found",
+                body=f"java/applet/Applet: {applet_found}",
+                heuristic=Heuristic(6),
+                parent=res_class,
+            )
+
+        if classloader_found > 0:
+            ResultSection(
+                "Classloader Found",
+                body=f"java/lang/ClassLoader: {classloader_found}",
+                heuristic=Heuristic(7),
+                parent=res_class,
+            )
+
+        if security_found > 0:
+            ResultSection(
+                "Security Found",
+                body=f"java/security/*: {security_found}",
+                heuristic=Heuristic(8),
+                parent=res_class,
+            )
+
+        if url_found > 0:
+            ResultSection("URL Found", body=f"java/net/URL: {url_found}", heuristic=Heuristic(9), parent=res_class)
+
+        if res_class.subsections:
+            result_list.append(res_class)
+
+        # attach result section to relevant files. Get interesting files to add to extracted
+        important_output_files = self.recurse_add_result(request.result, important_result_list)
+
+        for desc, file in important_output_files:
+            file_description = desc + f"Extracted from 'JAR' file {filename}"
+            request.add_extracted(
+                file,
+                file.replace(extract_dir + "/", "").replace(decompiled_dir + "/", ""),
+                file_description,
+                safelist_interface=self.api_interface,
+            )
+        # put as many decompiled class file in extracted as possible and leave the rest in supplementary
+        max_extracted = (request.task.max_extracted - len(important_output_files)) - 1
+        sorted_class_files = sorted(list(set(extracted_class_files)))
+        max_class_extracted = 0 if max_extracted < 0 else min(len(sorted_class_files), max_extracted)
+
+        for path, name, desc in sorted_class_files[:max_class_extracted]:
+            request.add_extracted(path, name, desc, safelist_interface=self.api_interface)
+
+        supplementary_files.extend(sorted_class_files[max_class_extracted:])
+        for path, name, desc in supplementary_files:
+            request.add_supplementary(path, name, desc)
+
+        for res in result_list:
+            request.result.add_section(res)
+
+    def recurse_add_result(self, request_result, result_list, parent=None):
+        output_files = []
+
+        file_set = set()
+
+        for result_desc in result_list:
+            res = ResultSection(
+                result_desc["title_text"],
+                classification=result_desc.get("classification", Classification.UNRESTRICTED),
+                parent=parent,
+                body_format=result_desc.get("body_format", BODY_FORMAT.TEXT),
+                heuristic=result_desc["heur_id"],
+            )
+
+            # Add Tags
+            tags = result_desc.get("tags", [])
+            for res_tag in tags:
+                res.add_tag(res_tag[0], res_tag[1])
+
+            # Add body
+            body = result_desc.get("body", None)
+            if body:
+                res.set_body(body)
+
+            # File for resubmit
+            files = result_desc.get("files", [])
+            desc = result_desc.get("file_desc", "")
+            for res_file in files:
+                # make sure we are only adding unique file
+                if res_file in file_set:
+                    continue
+                output_files.append((desc, res_file))
+                file_set.add(res_file)
+
+            # Add to file res if root result
+            if parent is None:
+                request_result.add_section(res)
+
+        return output_files
