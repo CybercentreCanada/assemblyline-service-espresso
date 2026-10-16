@@ -181,6 +181,10 @@
         "sha256": "008d41a13edce7b9979fe9951f439312d296cb6250a2614b22ce67946faafc4e"
       },
       {
+        "name": "gg/essential/loader/stage0/EssentialSetupTweaker.java",
+        "sha256": "00d055e6fbb0ccca955c30bafe243f81dc8d9a97621aaa43db215b04b5b4ccc6"
+      },
+      {
         "name": "com/google/protobuf/UnknownFieldSetLite.java",
         "sha256": "0290e07607bdfe3eb9f824815c598d301c477c1fae53e6864c5b05b3239bbba1"
       },
@@ -237,10 +241,6 @@
         "sha256": "3977f26cd92207dd4e8b0f133e8670f99cd7decdd62d27128cc8322cc051897b"
       },
       {
-        "name": "com/google/protobuf/Internal.java",
-        "sha256": "3afecf72181ebe2be15b86e2e21271c98c118c4488382f70ba4116c12656830e"
-      },
-      {
         "name": "com/google/protobuf/UninitializedMessageException.java",
         "sha256": "3bf6422d64c97b76b398be1ad480e3d45ef5706f2b4c9c89fdb1b976fb022324"
       },
@@ -263,6 +263,10 @@
       {
         "name": "gg/essential/loader/stage0/EssentialLoader.java",
         "sha256": "7288cbfeddad6b8467d7116f14c43a168af416577bd967ade800741403222af7"
+      },
+      {
+        "name": "com/google/protobuf/Internal.java",
+        "sha256": "747a3b1d491340c294d0af8b758f41554b5ad4e1dc765a04ae4dd2cfce4450e4"
       },
       {
         "name": "com/google/protobuf/AbstractMessageLite.java",
@@ -315,10 +319,6 @@
       {
         "name": "club/thom/tfm/TFM.java",
         "sha256": "c04a2fa59c2bb06ed066e060c30ff47791e7cc2a3a1c9f1b8e67d9c62fd86d66"
-      },
-      {
-        "name": "gg/essential/loader/stage0/EssentialSetupTweaker.java",
-        "sha256": "c0743385001c12b4558e00fce11bb56c73c1b3278a652a345b135dd9c6bcb1f4"
       },
       {
         "name": "com/google/protobuf/BinaryReader$SafeHeapReader.java",
