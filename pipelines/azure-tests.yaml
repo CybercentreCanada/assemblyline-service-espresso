@@ -25,6 +25,4 @@ extends:
   template: stages/test-service.yaml@PipelineTemplates
   parameters:
     samples_repo: unittest-samples
-    test_container: 'false'
-    test_env:
-      CFR_VERSION: '0.152'
+    test_container: 'true'
