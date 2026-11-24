@@ -1,20 +1,21 @@
-import hashlib
+import concurrent.futures
 import logging
 import os
 import zipfile
-import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 from subprocess import PIPE, Popen
 
+import chardet
 from assemblyline.common import forge
 from assemblyline.common.hexdump import hexdump
-from assemblyline.common.str_utils import safe_str, translate_str
+from assemblyline.common.str_utils import safe_str
 from assemblyline_service_utilities.common.keytool_parse import certificate_chain_from_printcert, keytool_printcert
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import BODY_FORMAT, Heuristic, Result, ResultSection
 from assemblyline_v4_service.common.utils import set_death_signal
-from .file_result import FileResult, ClassAttributes
 from javatools.manifest import Manifest
+
+from espresso.file_result import ClassAttributes, FileResult
 
 G_LAUNCHABLE_EXTENSIONS = [
     "BAT",  # DOS/Windows batch file
@@ -32,6 +33,13 @@ Classification = forge.get_classification()
 
 class NotJARException(Exception):
     pass
+
+
+def translate_str(s: str) -> dict:
+    r = chardet.detect(s.encode())
+    r["converted"] = safe_str(s)
+    r["encoding"] = r["encoding"] or "unknown"
+    return r
 
 
 # noinspection PyBroadException
@@ -453,7 +461,6 @@ class Espresso(ServiceBase):
 
         if res_meta.subsections:
             result_list.append(res_meta)
-
 
         res_class = ResultSection("[Suspicious classes]")
 
